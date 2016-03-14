@@ -1,0 +1,45 @@
+{
+  "ProjectName": "PruebaKike",
+  "ProjectGuid": "09817979-b01e-45fc-b4fc-468c9ecd9414",
+  "projectVersion": 1,
+  "AppIdentifier": "com.telerik.PruebaKike",
+  "DisplayName": "PruebaKike",
+  "Author": "",
+  "Description": "PruebaKike",
+  "BundleVersion": "1.0",
+  "AndroidVersionCode": "1",
+  "iOSDeviceFamily": [
+    "1",
+    "2"
+  ],
+  "iOSBackgroundMode": [],
+  "ProjectTypeGuids": "{070BCB52-5A75-4F8C-A973-144AF0EAFCC9}",
+  "FrameworkVersion": "3.7.0",
+  "AndroidPermissions": [
+    "android.permission.INTERNET"
+  ],
+  "DeviceOrientations": [
+    "Portrait",
+    "Landscape"
+  ],
+  "AndroidHardwareAcceleration": "false",
+  "iOSStatusBarStyle": "Default",
+  "Framework": "Cordova",
+  "WP8TileTitle": "",
+  "WP8Publisher": "",
+  "WP8Capabilities": [
+    "ID_CAP_NETWORKING",
+    "ID_CAP_WEBBROWSERCOMPONENT"
+  ],
+  "WP8Requirements": [],
+  "WP8PublisherID": "{e7aa2c5a-17ac-47b3-aad8-ddc944ac65e6}",
+  "WP8ProductID": "{1400615e-fb14-47ae-b17f-e565dbad07cc}",
+  "WPSdk": "8.0",
+  "WP8PackageIdentityName": "1234Telerik.PruebaKike",
+  "WP8WindowsPublisherName": "CN=Telerik",
+  "WP8SupportedResolutions": [
+    "ID_RESOLUTION_WVGA",
+    "ID_RESOLUTION_WXGA",
+    "ID_RESOLUTION_HD720P"
+  ]
+}
