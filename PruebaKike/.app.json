@@ -4,16 +4,232 @@
     {
       "type": "kendo-ui-mobile:view",
       "name": "home",
-      "components": [],
+      "components": [
+        {
+          "type": "kendo-ui-mobile:about",
+          "name": "homeModel",
+          "appName": "My App",
+          "appVersion": "Version 1",
+          "appIcon": "zzz.png",
+          "appDescription": "App description",
+          "contactButton": true,
+          "contactLabel": "Contact us",
+          "contactMail": "support@example.com",
+          "facebookButton": true,
+          "facebookLabel": "Like us on Facebook",
+          "facebookLink": "https://www.facebook.com/Telerik",
+          "twitterButton": true,
+          "twitterLabel": "Follow us on Twitter",
+          "twitterLink": "https://twitter.com/telerik"
+        }
+      ],
       "title": "Home View",
       "addToNavigation": true,
       "icon": "home"
+    },
+    {
+      "type": "kendo-ui-mobile:view",
+      "name": "inicio",
+      "components": [
+        {
+          "type": "kendo-ui-mobile:authentication",
+          "name": "inicioModel",
+          "dataProvider": "pruebaKike",
+          "emailLabel": "Correo",
+          "passwordLabel": "Contraseña",
+          "signinLabel": "Iniciar Sesión",
+          "signinRedirect": "home",
+          "enableRegistration": true,
+          "gotoRegisterLabel": "Registrarse",
+          "registerEmailLabel": "Correo",
+          "registerPasswordLabel": "Contraseña",
+          "registerNameLabel": "Usuario",
+          "registerLabel": "Registrarse",
+          "registerRedirect": "home",
+          "gotoSigninLabel": "Cancelar",
+          "enableLogout": true,
+          "logoutLabel": "Cerrar Sesión",
+          "enableRememberme": true,
+          "remembermeLabel": "Guardar Contraseña"
+        }
+      ],
+      "title": "Inicio",
+      "addToNavigation": true,
+      "icon": "home"
+    },
+    {
+      "type": "kendo-ui-mobile:view",
+      "name": "store",
+      "components": [
+        {
+          "type": "kendo-ui-mobile:editableList",
+          "listExtraFields": [],
+          "detailExtraFields": [],
+          "components": [
+            {
+              "type": "kendo-ui-mobile:editableListForm",
+              "components": [
+                {
+                  "type": "kendo-ui-mobile:editableListFormField",
+                  "name": "shortText",
+                  "title": "Short text",
+                  "inputType": "shortText",
+                  "dataBindingOptional": "SortText"
+                },
+                {
+                  "type": "kendo-ui-mobile:editableListFormField",
+                  "name": "longText",
+                  "title": "Long text",
+                  "inputType": "longText",
+                  "dataBindingOptional": "Location"
+                }
+              ],
+              "name": "editableListForm5",
+              "formType": "detail"
+            },
+            {
+              "type": "kendo-ui-mobile:editableListForm",
+              "components": [
+                {
+                  "type": "kendo-ui-mobile:editableListFormField",
+                  "name": "addApunte",
+                  "title": "Apunte",
+                  "inputType": "text",
+                  "dataBinding": "Text"
+                },
+                {
+                  "type": "kendo-ui-mobile:editableListFormField",
+                  "name": "addLike",
+                  "title": "Like",
+                  "inputType": "switch",
+                  "dataBinding": "Likes"
+                },
+                {
+                  "type": "kendo-ui-mobile:editableListFormField",
+                  "name": "addSortText",
+                  "title": "Descripcion",
+                  "inputType": "text",
+                  "dataBinding": "SortText"
+                },
+                {
+                  "type": "kendo-ui-mobile:editableListFormField",
+                  "name": "addLongText",
+                  "title": "Narración",
+                  "inputType": "text",
+                  "dataBinding": "LongText"
+                }
+              ],
+              "name": "editableListForm6",
+              "formType": "add"
+            },
+            {
+              "type": "kendo-ui-mobile:editableListForm",
+              "components": [
+                {
+                  "type": "kendo-ui-mobile:editableListFormField",
+                  "name": "editText",
+                  "title": "Apunte",
+                  "inputType": "text",
+                  "dataBinding": "Text"
+                },
+                {
+                  "type": "kendo-ui-mobile:editableListFormField",
+                  "name": "editLike",
+                  "title": "Like",
+                  "inputType": "switch",
+                  "dataBinding": "Likes"
+                },
+                {
+                  "type": "kendo-ui-mobile:editableListFormField",
+                  "name": "editSortText",
+                  "title": "Detalle",
+                  "inputType": "text",
+                  "dataBinding": "SortText"
+                },
+                {
+                  "type": "kendo-ui-mobile:editableListFormField",
+                  "name": "editLongText",
+                  "title": "Narración",
+                  "inputType": "text",
+                  "dataBinding": "LongText"
+                }
+              ],
+              "name": "editableListForm7",
+              "formType": "edit"
+            }
+          ],
+          "name": "storeModel",
+          "dataProvider": "pruebaKike",
+          "collection": "Activities",
+          "headerField": "Text",
+          "iconField": true,
+          "imageField": "Picture",
+          "subHeaderField": "Likes",
+          "filterField": "Text",
+          "group": "Text",
+          "pullToRefresh": true,
+          "endlessScroll": true,
+          "deleteItemButton": true,
+          "deleteItemConfirmation": true,
+          "detailHeaderField": "Text",
+          "detailSubHeaderField": "SortText",
+          "detailDescriptionField": "LongText",
+          "detailImageField": "Picture",
+          "addItemForm": true,
+          "editItemForm": true
+        }
+      ],
+      "title": "Mis Apuntes",
+      "addToNavigation": true,
+      "icon": "bookmarks"
+    },
+    {
+      "type": "kendo-ui-mobile:view",
+      "name": "platos",
+      "components": [
+        {
+          "type": "kendo-ui-mobile:editableList",
+          "listExtraFields": [],
+          "detailExtraFields": [],
+          "components": [],
+          "name": "platosModel",
+          "dataProvider": "pruebaKike",
+          "collection": "Entrada",
+          "headerField": "Entrada",
+          "iconField": false,
+          "imageField": "Foto",
+          "subHeaderField": "Precio",
+          "pullToRefresh": false,
+          "endlessScroll": false,
+          "deleteItemButton": false,
+          "detailHeaderField": "Entrada",
+          "detailSubHeaderField": "Precio",
+          "detailDescriptionField": "Descripcion",
+          "detailImageField": "Foto",
+          "addItemForm": false,
+          "editItemForm": false
+        }
+      ],
+      "title": "Georeferencia",
+      "addToNavigation": true,
+      "icon": "globe"
     }
   ],
-  "dataProviders": [],
+  "dataProviders": [
+    {
+      "type": "kendo-ui-mobile:dataProvider",
+      "name": "pruebaKike",
+      "title": "PruebaKike / PruebaKike",
+      "source": "everlive",
+      "everliveKey": "6sebob9r9d61bfw5",
+      "offlineStorage": true
+    }
+  ],
   "name": "kendoUiMobileApp",
-  "navigation": "tabstrip",
-  "view": "home",
+  "navigation": "listmenu",
   "transition": "slide",
-  "skin": "flat"
+  "skin": "nova",
+  "skinActive": "#ff4350",
+  "skinText": "#32364c",
+  "skinSecondary": "#888e90"
 }

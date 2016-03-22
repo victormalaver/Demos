@@ -1,0 +1,55 @@
+<div id="Georeferencia" data-role="view" data-title="" data-layout="main" data-model="app.entradas">
+    </br>
+    </br>
+    </br>
+    </br>
+    </br>
+    </br>
+    </br>
+    </br>
+    <div align="center">
+        <img src="components/platos/images/fondoRestaurant.png" style="width:40%;" />
+        <div class="button-group button-group-vertical">
+            <a data-role="button" data-bind="{events: {click: entradasModel.entradasTipo} }">Hacer Pedidos</a>
+            <a data-role="button" href="#components/platos/entregas.html">Entregas</a>
+        </div>
+    </div>
+</div>
+<style>
+    .km-nova .km-content {
+        background-color: transparent;
+    }
+    @font-face {
+        font-family: "Luna";
+        src: url("components/platos/fonts/Luna.ttf") format("ttf"), url("components/platos/fonts/Luna.ttf") format("truetype"), url("components/platos/fonts/Luna.ttf") format("svg")
+    }
+    #Orden,
+    #Georeferencia {
+        font-family: "Luna";
+        font-size: 15px;
+        color: white;
+    }
+    .km-view,
+    #Georeferencia {
+        background-image: url("components/platos/images/fondoRestaurant.gif");
+    }
+    #Georeferencia .button-group .km-button {
+        padding: 1.5em;
+        width: 80%;
+    }
+    #Orden .button-group .km-button {
+        padding: 1.5em;
+    }
+    #Orden .button-group {
+        width: 100%;
+    }
+    .km-nova .km-button,
+    .km-nova .km-buttongroup .km-button {
+        border-radius: 20px;
+    }
+    .km-nova .km-button {
+        color: white;
+        background: transparent;
+        border-color: white;
+    }
+</style>

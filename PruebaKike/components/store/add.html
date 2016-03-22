@@ -1,0 +1,47 @@
+<div data-role="view" data-title="Add" data-model="app.store.addItemViewModel" data-bind="events: { show: onShow }" id="storeModelAddItemView">
+    <header data-role="header">
+        <div data-role="navbar" class="header-text">
+            <span style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis; text-align: center; display: block; margin-left: 70px; margin-right: 70px;" data-role="view-title"></span>
+            <a data-role="backbutton" data-align="left">Cancel</a>
+            <a data-role="button" data-align="right" data-bind="events: { click: onSaveClick }">Save</a>
+        </div>
+    </header>
+    <!-- START_CUSTOM_CODE_storeModel -->
+    <!-- END_CUSTOM_CODE_storeModel -->
+    <div id="editableListForm6" class="form-view">
+        <form>
+            <ul class="form-content" data-role="listview" data-style="inset">
+                <li>
+
+                    <label><span>Apunte</span>
+                        <input id="addApunte" data-bind="value: addFormData.addApunte" type="text">
+                    </label>
+
+                </li>
+                <li>
+
+                    <label><span>Like</span>
+                        <input id="addLike" data-bind="value: addFormData.addLike" data-role="switch">
+                    </label>
+
+                </li>
+                <li>
+
+                    <label><span>Descripcion</span>
+                        <input id="addSortText" data-bind="value: addFormData.addSortText" type="text">
+                    </label>
+
+                </li>
+                <li>
+
+                    <label><span>Narración</span>
+                        <input id="addLongText" data-bind="value: addFormData.addLongText" type="text">
+                    </label>
+
+                </li>
+            </ul>
+        </form>
+        <!-- START_CUSTOM_CODE_editableListForm6 -->
+        <!-- END_CUSTOM_CODE_editableListForm6 -->
+    </div>
+</div>

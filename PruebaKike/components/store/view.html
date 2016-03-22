@@ -1,0 +1,39 @@
+<div data-role="view" data-title="Mis Apuntes" data-layout="main" data-model="app.store" data-show="app.store.onShow" data-after-show="app.store.afterShow">
+
+    <!-- START_CUSTOM_CODE_store -->
+    <!-- Add custom code here. For more information about custom code, see http://docs.telerik.com/platform/screenbuilder/troubleshooting/how-to-keep-custom-code-changes -->
+
+    <!-- END_CUSTOM_CODE_store -->
+    <header data-role="header">
+        <div data-role="navbar" class="header-text">
+
+            <a data-role="backbutton" data-align="left">Back</a>
+
+            <span data-role="view-title" style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis; text-align: center; display: block; margin-left: 70px; margin-right: 70px;"></span>
+
+            <a data-align="right" data-role="button" class="nav-button" href="#/">Index</a>
+
+            <a data-role="button" data-align="right" data-bind="events: { click: storeModel.addClick }">Add</a>
+        </div>
+    </header>
+
+    <!--  Certain features like grouping and inset styling are not supported when endless scroll is enabled. -->
+    <form class="km-filter-form custom-filter">
+        <div class="km-filter-wrap">
+            <input type="serach" placeholder="Search..." data-bind="{events:{keyup: storeModel.searchChange}}">
+        </div>
+    </form>
+    <ul data-role="listview" data-auto-bind="false" data-style="" data-template="storeModelTemplate" data-bind="{ source: storeModel.dataSource, events: {click: storeModel.itemClick} }" data-pull-to-refresh="true" data-endless-scroll="true">
+    </ul>
+    <!-- START_CUSTOM_CODE_storeModel -->
+    <!-- Add custom code here. For more information about custom code, see http://docs.telerik.com/platform/screenbuilder/troubleshooting/how-to-keep-custom-code-changes -->
+
+    <!-- END_CUSTOM_CODE_storeModel -->
+    <script type="text/x-kendo-template" id="storeModelTemplate">
+        <div class="image-with-text">
+            <img src="#: data['PictureUrl'] #" width="30%" height="30%">
+            <h3><span class="#: data.icon() #"></span>#: data['Text'] #</h3>
+            <p>#: data['Likes'] #</p>
+        </div>
+    </script>
+</div>
