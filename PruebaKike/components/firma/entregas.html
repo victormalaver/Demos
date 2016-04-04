@@ -1,120 +1,37 @@
-<div id="entregasFirma"  data-role="view" data-init="mobileListViewPullWithEndless" data-title="Pull to refresh">
-    <header data-role="header">
-        <div data-role="navbar">
-            <a data-align="left" data-icon="add" data-role="button" data-rel="modalview" href="#modalview-add"></a>
-            <span data-role="view-title"></span>
-            <a data-align="right" data-role="button" class="nav-button" data-icon="home" href="#/"></a>
-            <a data-align="right" data-icon="source-code" data-click="goToSourceCode" data-role="button" title="Show this demo source code"></a>
-        </div>
-    </header>
-    <ul id="pull-with-endless-listview"></ul>
-</div>
-<div data-role="modalview" id="modalview-add" style="width: 95%;">
-    <div data-role="header">
-        <div data-role="navbar">
-            <span>Add Product</span>
-            <a data-click="closeModalViewAdd" data-role="button" data-align="right">Cancel</a>
-        </div>
-    </div>
-    <ul data-role="listview" data-style="inset">
-        <li>
-            <label for="username" class="km-label-above">Product Name
-                <input type="text" id="name" />
-            </label>
-        </li>
-        <li><i></i> <a data-role="button" data-click="addNew" class="km-justified km-primary" type="button" data-align="right">Add New Product</a>
-        </li>
-    </ul>
-</div>
-<script type="text/x-kendo-tmpl" id="pull-with-endless-template">
-    <div class="product-item">
-        <h3>#:ProductName#</h3>
-        <span class="km-badge km-listview-item-badge">#:kendo.toString(UnitPrice, "c")#</span>
-    </div>
-</script>
-<script src="components/firma/ordenes.js"></script>
-<script>
-    function mobileListViewPullWithEndless(e) {
-        var dataSource = new kendo.data.DataSource({
-            data: products,
-            schema: {
-                total: function () {
-                    return 77;
-                }
-            },
-            serverPaging: true,
-            pageSize: 21
-        });
-
-        $("#pull-with-endless-listview").kendoMobileListView({
-            dataSource: dataSource,
-            template: $("#pull-with-endless-template").text(),
-            pullToRefresh: true,
-            endlessScroll: true
-        });
-
-        $("#addNew").click(function () {
-            loader.show();
-            addProductDataSource.add({
-                ProductName: $("#name").val(),
-                UnitPrice: Math.floor((Math.random() * 10) + 1)
-            });
-        });
-    }
-
-    function closeModalViewAdd() {
-        $("#modalview-add").kendoMobileModalView("close");
-    }
-
-    function addNew() {
-        addProductDataSource.add({
-            ProductName: $("#name").val(),
-            UnitPrice: Math.floor((Math.random() * 10) + 1)
-        });
-
-        closeModalViewAdd();
-    }
-
-    var addProductDataSource = new kendo.data.DataSource({
-        transport: {
-            create: {
-                url: "//demos.telerik.com/kendo-ui/service/Products/Create",
-                dataType: "jsonp"
-            },
-            parameterMap: function (options, operation) {
-                if (operation !== "read" && options.models) {
-                    return {
-                        models: kendo.stringify(options.models)
-                    };
-                }
-            }
-        },
-        schema: {
-            model: {
-                id: "ProductID",
-                fields: {
-                    ProductID: {
-                        editable: false,
-                        nullable: true
-                    },
-                    ProductName: {
-                        type: "string"
-                    }
-                }
-            }
-        },
-        autoSync: true,
-        batch: true,
-        requestEnd: function () {
-            $("#name").val("");
-        }
-    });
-</script>
 <style>
-    .product-item h3 {
-        margin: 0;
-    }
     #entregasFirma {
-        background-image: url("components/platos/images/firmaFondoBlur.png");
+        background-image: url("components/firma/images/firmaFondoBlur.png");
     }
 </style>
+<div id="entregasFirma" data-role="view" data-title="" data-layout="main" data-model="app.firma.firmaModel" data-init="app.firma.onShow" data-after-show="app.firma.afterShow">
+    <div class="button-group">
+        <a data-role="button" href="index.html">Regresar</a>
+        <a data-role="button">Confirmar</a>
+    </div>
+    <!--  Certain features like grouping and inset styling are not supported when endless scroll is enabled. -->
+    <form class="km-filter-form custom-filter">
+        <div class="km-filter-wrap">
+            <input type="serach" placeholder="Search..." data-bind="{events:{keyup: searchChange}}">
+        </div>
+    </form>
+    <input id="inputFirma" type="text">
+    <ul data-role="listview" data-auto-bind="false" data-style="" data-template="firmaModelTemplate" data-bind="{ source: firmaModel.dataSource}">
+    </ul>
+    <!-- START_CUSTOM_CODE_storeModel -->
+    <!-- Add custom code here. For more information about custom code, see http://docs.telerik.com/platform/screenbuilder/troubleshooting/how-to-keep-custom-code-changes -->
+    <!-- END_CUSTOM_CODE_storeModel -->
+    <!--     # for (var i = 0; i < data['UserExpanded'].length; i++) { #
+                        <li>#= UserExpanded[i] #</li># } # -->
+    <script type="text/x-kendo-template" id="firmaModelTemplate">
+        <div class="image-with-text">
+            <img src="#: data['PictureUrl'] #" width="30%" height="30%">
+            <a data-bind="events: { click: goToFirma }">
+                <h3><span class="#: data.icon() #"></span>#: data['Users'] #</h3>
+                <p>Costo de la órden: #: data['Users'] #</p>
+                <label>Firma
+                </label>
+                <h3>#= UserExpanded #<h3>
+            </a>
+        </div>
+    </script>
+</div>

@@ -1,5 +1,11 @@
 <script src="components/georeferencia/database/entradas.js"></script>
-<div data-role="view" data-init="mobileListViewPullWithEndless" data-title="Pull to refresh">
+<div data-role="view" data-init="mobileListViewPullWithEndless" data-show="openModalViewEntradas" data-title="Seleccione una entrada">
+    <header data-role="header">
+        <div id="headerEntradas" data-role="navbar" class="header-text">
+            <span style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis; text-align: center; display: block; margin-left: 70px; margin-right: 70px;" data-role="view-title"></span>
+            <a data-role="backbutton" data-align="left">Cancel</a>
+        </div>
+    </header>
     <ul data-role="listview" data-auto-bind="false" data-style="inset" id="listviewEntradas"></ul>
     <!--     <ul id="listviewEntradas" data-role="listview" data-auto-bind="false" data-style="inset" data-template="entradasModelTemplate" data-bind="{ source: entradasModel.dataSource}" data-pull-to-refresh="false" data-endless-scroll="false">
     </ul> -->
@@ -17,19 +23,25 @@
             <div>
                 </br>
                 </br>
-                <p>#: data['Entrada'] #:</p>
+                <h2>#: data['Entrada'] #:</h2>
                 </br>
-                <h2 class="km-badge km-listview-item-badge">S/. #: data['Precio'] #</h2>
-                <!--p>#: data['Descripcion'] #</p-->
+                <h2 class="km-badge km-listview-item-badge" style="background-color:tomato;">S/. #: data['Precio'] #</h2>
                 </br>
-                <i class="fa fa-check fa-3x" onclick="verListaPlatos('#: data['Id'] #','#: data['Entrada'] #','#: data['Precio'] #' );"></i>
+                <a data-role="button" onclick="verListaPlatos('#: data['Id'] #','#: data['Entrada'] #','#: data['Precio'] #' );">Continuar</a>
             </div>
         </div>
     </div>
 </script>
+<div data-role="modalview" id="modalEntradas" style="width: 300px; height: 300px;background-color:transparent;">
+    <img src="components/georeferencia/images/logoModalEntradas.png" style="width: 80%;" />
+    <h2>Seleccione una entrada</h2>
+</div>
+<!-- <div data-role="modalview" id="modalEntradas" style="background-color:transparent;">
+    <img src="components/georeferencia/images/logoModal.png" />
+</div> -->
 <script>
-    function verListaPlatos(Id,Entrada,Precio) {
-        app.mobileApp.navigate('#components/georeferencia/platos.html?'+'Id='+ Id+ '&Entrada='+Entrada+'&Precio='+Precio);
+    function verListaPlatos(Id, Entrada, Precio) {
+        app.mobileApp.navigate('#components/georeferencia/platos.html?' + 'Id=' + Id + '&Entrada=' + Entrada + '&Precio=' + Precio);
     }
 
     function mobileListViewPullWithEndless(e) {
@@ -51,28 +63,61 @@
             endlessScroll: false
         });
     }
+
+    function closeModalViewEntradas() {
+        $("#modalEntradas").kendoMobileModalView("close");
+    }
+
+    function openModalViewEntradas() {
+        $("#modalEntradas").kendoMobileModalView("open");
+        $("#modalEntradas").parent().parent().parent().css("background", "rgba(255, 255, 255, 0.8)");
+        $("#modalEntradas").parent().parent().css({
+            "text-align": "center",
+            "position": "relative!important",
+            "top": "auto!important",
+            "left": "auto!important",
+            "display": "inline-block!important",
+            "vertical-align": "middle"
+        });
+        setTimeout(function () {
+            closeModalViewEntradas();
+        }, 1500);
+    }
 </script>
 <style>
-    #listviewEntradas {
-        padding-left: 0;
+    #modalEntradas {
+        font-family: "Luna";
+        font-size: 10px;
+        color: black;
+        line-height: 24px;
+        letter-spacing: 0.2em;
+    }
+    #headerEntradas {
+        /*         background-image: -webkit-gradient(linear, left top, left bottom, from(#2e3246), to(#242736));
+        background-image: -webkit-linear-gradient(top, #2e3246 0, #242736 100%);
+        background-image: linear-gradient(to bottom, #2e3246 0, #242736 100%); */
+        
+        background-image: none;
+        background-color: tomato;
     }
     #listviewEntradas>li {
-        padding-left: 0;
+        /*         padding-left: 0; */
+        
         padding: 0;
     }
     .thumb {
-        position: relative;
+        /* position: relative; */
+        
         width: 100%;
-        height: 100%;
-        overflow: hidden;
     }
     .thumb img {
-        width: 100%;
-        padding: 0;
+        width: inherit;
+        /*         padding: 0; */
+        
         -webkit-mask-image: linear-gradient(to bottom, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 1) 80%, rgba(255, 255, 255, 0) 100%);
     }
     .thumb > div div {
-        padding: 20px 40px;
+        /*         padding: 20px 40px; */
     }
     .thumb:hover > div {
         display: block;
@@ -89,14 +134,13 @@
         color: rgba(0, 0, 0, 0.5);
         position: inherit;
     }
-    .thumb div div p {
-        color: rgba(0, 0, 0, 0.5);
-    }
     .thumb div div i {
         color: rgba(0, 0, 0, 0.5);
     }
     .thumb > div {
         background-color: rgba(255, 255, 255, 0.5);
+        /*color de la transparencia hover*/
+        
         opacity: 0;
         position: absolute;
         width: 100%;

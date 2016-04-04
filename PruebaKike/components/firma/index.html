@@ -1,4 +1,4 @@
-<div id="Firma" data-role="view" data-title="" data-layout="main" data-model="app.firma">
+<div id="Firma" data-role="view" data-title="" data-layout="main">
     </br>
     </br>
     </br>
@@ -6,7 +6,7 @@
     </br>
     <div align="center">
         <div class="button-group button-group-vertical">
-            <a data-role="button" href="#components/firma/entregas.html">Entregasss</a>
+            <a data-role="button" href="#components/firma/entregas.html">Entregas</a>
         </div>
     </div>
 </div>
@@ -16,17 +16,20 @@
     }
     @font-face {
         font-family: "Rage";
-        src: url("components/platos/fonts/RAGE.TTF") format("ttf"), url("components/platos/fonts/RAGE.TTF") format("truetype"), url("components/platos/fonts/RAGE.TTF") format("svg")
+        src: url("components/firma/fonts/RAGE.TTF") format("ttf"), url("components/firma/fonts/RAGE.TTF") format("truetype"), url("components/firma/fonts/RAGE.TTF") format("svg")
     }
     #Orden,
-    #Firma {
+    #Firma,
+    #firmaView,
+    #entregasFirma {
         font-family: "Rage";
-        font-size: 40px;
+        /*         font-size: 40px; */
+        
         color: red;
     }
     .km-view,
     #Firma {
-        background-image: url("components/platos/images/firmaFondo.png");
+        background-image: url("components/firma/images/firmaFondo.png");
         background-size: 100% 100%;
     }
     #Firma .button-group .km-button {
@@ -43,26 +46,14 @@
     .km-nova .km-buttongroup .km-button {
         border-radius: 20px;
     }
-    #Firma .km-button {
-        /*         color: Crimson;
-        background: rgba(255, 255, 255, 0.3);
-        border-color: Crimson;
-        box-shadow: 1px 1px 10px rgba(0, 0, 0, 1);
-        -webkit-filter: blur(1px);
-        filter: blur(1px); */
+    #Firma .km-button,
+    #entregasFirma .button-group .km-button,
+    #firmaView .km-button {
         border-color: Crimson;
         background: rgba(255, 255, 255, 0.3);
         color: #CA1818;
-        box-shadow: 1px 1px 10px rgba(0, 0, 0, 1);
-        
-        /* Chrome, Firefox 3.5+, IE 10+, Opera 9+, Safari 1+ */
-        
-        text-shadow: 0 0 15px rgba(0, 0, 0, 1), 0 0 15px rgba(0, 0, 0, 1), 0 0 15px rgba(0, 0, 0, 1);
-        /* The webkit implementations to support more SOME older browsers */
-        
-        -moz-text-shadow: 0 0 15px rgba(0, 0, 0, 1), 0 0 15px rgba(0, 0, 0, 1), 0 0 15px rgba(0, 0, 0, 1);
-        -webkit-text-shadow: 0 0 15px rgba(0, 0, 0, 1), 0 0 15px rgba(0, 0, 0, 1), 0 0 15px rgba(0, 0, 0, 1);
-        -khtml-text-shadow: 0 0 15px rgba(0, 0, 0, 1), 0 0 15px rgba(0, 0, 0, 1), 0 0 15px rgba(0, 0, 0, 1);
+        font-size: 40px;
+        padding: 0em;
     }
     #Firma .km-button:active {
         background: rgba(0, 0, 0, 0.3);

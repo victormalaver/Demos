@@ -1,0 +1,41 @@
+<div id="carritoCompras" data-role="view" data-title="Carrito de Compras" data-layout="main" data-model="app.entradas">
+    <header data-role="header">
+        <div id="headerCarrito" data-role="navbar" class="header-text">
+            <span style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis; text-align: center; display: block; margin-left: 70px; margin-right: 70px;" data-role="view-title"></span>
+            <a data-role="backbutton" data-align="left">Cancel</a>
+        </div>
+    </header>
+    <a data-role="detailbutton" data-icon="info" class="iconInfo" data-bind="{events: {click: entradasModel.openModalInfoGeoref} }"></a>
+    </br>
+    </br>
+    </br>
+    </br>
+    </br>
+    </br>
+    </br>
+    </br>
+    <div align="center">
+        <img src="components/georeferencia/images/fondoRestaurant.png" style="width:40%;" />
+        <div class="button-group button-group-vertical">
+            <a data-role="button" data-bind="{events: {click: entradasModel.entradasTipo} }">Mi ubicación</a>
+            <a data-role="button" href="#components/georeferencia/orden.html">Pedir</a>
+        </div>
+    </div>
+</div>
+<style>
+    .km-view,
+    #carritoCompras {
+        background-image: none;
+        background-color: white;
+    }
+    #carritoCompras .button-group .km-button {
+        padding: 1.5em;
+        width: 80%;
+        background-color: tomato;
+    }
+    #headerCarrito {
+        font: normal 1em "Helvetica Neue", "Helvetica", "Roboto Light", "Arial", "Verdana", "sans-serif";
+        background-image: none;
+        background-color: tomato;
+    }
+</style>

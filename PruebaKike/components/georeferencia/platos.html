@@ -1,5 +1,11 @@
 <script src="components/georeferencia/database/platos.js"></script>
-<div data-role="view" data-init="mobileListViewPullWithEndless" data-title="Pull to refresh">
+<div data-role="view" data-init="mobileListViewPullWithEndless" data-show="openModalViewPlatos" data-title="Seleccione un plato">
+    <header data-role="header">
+        <div id="headerPlatos" data-role="navbar" class="header-text">
+            <span style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis; text-align: center; display: block; margin-left: 70px; margin-right: 70px;" data-role="view-title"></span>
+            <a data-role="backbutton" data-align="left">Cancel</a>
+        </div>
+    </header>
     <ul data-role="listview" data-auto-bind="false" data-style="inset" id="listviewPlatos"></ul>
     <!--     <ul id="listviewPlatos" data-role="listview" data-auto-bind="false" data-style="inset" data-template="platosModelTemplate" data-bind="{ source: entradasModel.dataSource}" data-pull-to-refresh="false" data-endless-scroll="false">
     </ul> -->
@@ -17,25 +23,26 @@
             <div>
                 </br>
                 </br>
-                <p>#: data['Plato'] #:</p>
+                <h2>#: data['Plato'] #:</h2>
                 </br>
-                <h2 class="km-badge km-listview-item-badge">S/. #: data['Precio'] #</h2>
-                <!--p>#: data['Descripcion'] #</p-->
+                <h2 class="km-badge km-listview-item-badge" style="background-color:tomato;">S/. #: data['Precio'] #</h2>
                 </br>
-                <i class="fa fa-check fa-3x" type="idPlato" onclick="verOrden('#: data['Id'] #','#: data['Plato'] #','#: data['Precio'] #' );"></i>
+                <a data-role="button" type="idPlato" onclick="verOrden('#: data['Id'] #','#: data['Plato'] #','#: data['Precio'] #' );">Continuar</a>
             </div>
         </div>
     </div>
 </script>
-<script>
-    function verOrden(IdEntrada,Entrada,PrecioEntrada,IdPlato,Plato,PrecioPlato) {
-
-        app.mobileApp.navigate('#components/georeferencia/orden.html?IdEntrada='+IdEntrada+'&Entrada='+Entrada+'&PrecioEntrada='+PrecioEntrada+'&IdPlato='+IdPlato+'&Plato='+Plato+'&PrecioPlato='+PrecioPlato);
+<div data-role="modalview" id="modalPlatos" style="width: 300px; height: 300px;background-color:transparent;">
+    <img src="components/georeferencia/images/logoModalPlatos.png" style="width: 80%;" />
+    <h2>Seleccione el plato principal</h2>
+</div>
+<script> 
+    function verOrden(IdEntrada, Entrada, PrecioEntrada, IdPlato, Plato, PrecioPlato) {
+        // app.mobileApp.navigate('#components/georeferencia/orden.html?IdEntrada=' + IdEntrada + '&Entrada=' + Entrada + '&PrecioEntrada=' + PrecioEntrada + '&IdPlato=' + IdPlato + '&Plato=' + Plato + '&PrecioPlato=' + PrecioPlato);
+        app.mobileApp.navigate('#components/georeferencia/agregar.html');
     }
-
+ 
     function mobileListViewPullWithEndless(e) {
-
-
         var dataSource = new kendo.data.DataSource({
             data: platos,
             schema: {
@@ -55,33 +62,66 @@
         });
 
         // console.log($("i[type=idPlato]").attr("onclick"));
-        var onclick = $("i[type=idPlato]").attr("onclick");
+        var onclick = $("a[type=idPlato]").attr("onclick");
         // console.log("'" + e.view.params.Id + "','" + e.view.params.Entrada + "','" + e.view.params.Precio + "'");
         var newUrl = ",'" + e.view.params.Id + "','" + e.view.params.Entrada + "','" + e.view.params.Precio + "');";
-        $("i[type=idPlato]").attr("onclick", onclick.replace(");","") + newUrl);
+        $("a[type=idPlato]").attr("onclick", onclick.replace(");", "") + newUrl);
+    }
+
+    function closeModalViewPlatos() {
+        $("#modalPlatos").kendoMobileModalView("close");
+    }
+
+    function openModalViewPlatos() {
+        $("#modalPlatos").kendoMobileModalView("open");
+        $("#modalPlatos").parent().parent().parent().css("background", "rgba(255, 255, 255, 0.8)");
+        $("#modalPlatos").parent().parent().css({
+            "text-align": "center",
+            "position": "relative!important",
+            "top": "auto!important",
+            "left": "auto!important",
+            "display": "inline-block!important",
+            "vertical-align": "middle"
+        });
+        setTimeout(function () {
+            closeModalViewPlatos();
+        }, 1500);
     }
 </script>
 <style>
-    #listviewPlatos {
-        padding-left: 0;
+    #modalPlatos {
+        font-family: "Luna";
+        font-size: 10px;
+        color: black;
+        line-height: 24px;
+        letter-spacing: 0.2em;
+    }
+    #headerPlatos {
+        /*         background-image: -webkit-gradient(linear, left top, left bottom, from(#2e3246), to(#242736));
+        background-image: -webkit-linear-gradient(top, #2e3246 0, #242736 100%);
+        background-image: linear-gradient(to bottom, #2e3246 0, #242736 100%); */
+        
+        background-image: none;
+        background-color: tomato;
     }
     #listviewPlatos>li {
-        padding-left: 0;
+        /*         padding-left: 0; */
+        
         padding: 0;
     }
     .thumb {
-        position: relative;
+        /* position: relative; */
+        
         width: 100%;
-        height: 100%;
-        overflow: hidden;
     }
     .thumb img {
-        width: 100%;
-        padding: 0;
+        width: inherit;
+        /*         padding: 0; */
+        
         -webkit-mask-image: linear-gradient(to bottom, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 1) 80%, rgba(255, 255, 255, 0) 100%);
     }
     .thumb > div div {
-        padding: 20px 40px;
+        /*         padding: 20px 40px; */
     }
     .thumb:hover > div {
         display: block;
@@ -98,14 +138,13 @@
         color: rgba(0, 0, 0, 0.5);
         position: inherit;
     }
-    .thumb div div p {
-        color: rgba(0, 0, 0, 0.5);
-    }
     .thumb div div i {
         color: rgba(0, 0, 0, 0.5);
     }
     .thumb > div {
         background-color: rgba(255, 255, 255, 0.5);
+        /*color de la transparencia hover*/
+        
         opacity: 0;
         position: absolute;
         width: 100%;

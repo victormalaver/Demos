@@ -1,0 +1,42 @@
+<div id="agregarCarrito" data-role="view" data-title="Agregar orden" data-layout="main" data-model="app.entradas">
+    <header data-role="header">
+        <div id="headerAgregar" data-role="navbar" class="header-text">
+            <span style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis; text-align: center; display: block; margin-left: 70px; margin-right: 70px;" data-role="view-title"></span>
+            <a data-role="backbutton" data-align="left">Cancel</a>
+            <a data-role="button" data-align="right" data-bind="events: { click: onSaveClick }" style="background-image:url('components/georeferencia/images/carrito2.png');background-repeat: no-repeat;">&nbsp;&nbsp;&nbsp;</a>
+        </div>
+    </header>
+    <!--     <a data-role="detailbutton" data-icon="info" class="iconInfo" data-bind="{events: {click: entradasModel.openModalInfoGeoref} }"></a> -->
+    </br>
+    </br>
+    </br>
+    </br>
+    </br>
+    </br>
+    </br>
+    </br>
+    <div align="center">
+        <img src="components/georeferencia/images/fondoRestaurant.png" style="width:40%;" />
+        <div class="button-group button-group-vertical">
+            <a data-role="button" data-bind="{events: {click: entradasModel.entradasTipo} }">Agregar al carrito</a>
+            <a data-role="button" href="#components/georeferencia/carrito.html">Pedir</a>
+        </div>
+    </div>
+</div>
+<style>
+    .km-view,
+    #agregarCarrito {
+        background-image: none;
+        background-color: white;
+    }
+    #agregarCarrito .button-group .km-button {
+        padding: 1.5em;
+        width: 80%;
+        background-color: tomato;
+    }
+    #headerAgregar {
+        font: normal 1em "Helvetica Neue", "Helvetica", "Roboto Light", "Arial", "Verdana", "sans-serif";
+        background-image: none;
+        background-color: tomato;
+    }
+</style>
