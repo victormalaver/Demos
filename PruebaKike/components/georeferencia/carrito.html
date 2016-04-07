@@ -1,24 +1,19 @@
-<div id="carritoCompras" data-role="view" data-title="Carrito de Compras" data-layout="main" data-model="app.entradas">
+<div id="carritoCompras" data-role="view" data-title="Mi Pedido" data-layout="main" data-model="app.carrito" data-show="app.carrito.onShow">
     <header data-role="header">
         <div id="headerCarrito" data-role="navbar" class="header-text">
             <span style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis; text-align: center; display: block; margin-left: 70px; margin-right: 70px;" data-role="view-title"></span>
             <a data-role="backbutton" data-align="left">Cancel</a>
         </div>
     </header>
-    <a data-role="detailbutton" data-icon="info" class="iconInfo" data-bind="{events: {click: entradasModel.openModalInfoGeoref} }"></a>
-    </br>
-    </br>
-    </br>
-    </br>
-    </br>
-    </br>
-    </br>
-    </br>
+    <ul data-role="listview" data-auto-bind="false">
+        <div id="ordenesGuardadas" align="center">
+        </div>
+    </ul>
     <div align="center">
-        <img src="components/georeferencia/images/fondoRestaurant.png" style="width:40%;" />
         <div class="button-group button-group-vertical">
-            <a data-role="button" data-bind="{events: {click: entradasModel.entradasTipo} }">Mi ubicación</a>
-            <a data-role="button" href="#components/georeferencia/orden.html">Pedir</a>
+            </br>
+            <a data-role="button" href="#components/georeferencia/orden.html" style="background-color:#c95820;">Mi ubicacion</a>
+            <a id="btnGenerarOrden" data-role="button"  style="background-color:#c95820;" data-bind="events: { click: carritoModel.addOrdenCarrito }">Pedir</a>
         </div>
     </div>
 </div>
@@ -28,14 +23,75 @@
         background-image: none;
         background-color: white;
     }
+    #btn-delete:active {
+        color: #c95820 !important;
+        background-color: white !important;
+        border: solid 1px !important;
+    }
+    #carritoCompras h2 {
+        color: #c95820;
+        margin-left: 10%;
+        font-size: 22px;
+    }
+    #carritoCompras h3 {
+        text-align: center;
+        color: black;
+    }
     #carritoCompras .button-group .km-button {
-        padding: 1.5em;
-        width: 80%;
-        background-color: tomato;
+        padding: 1em;
+        width: 45%;
+        background-color: #c95820;
+        font-family: "Luna";
+        font-size: 15px;
     }
     #headerCarrito {
         font: normal 1em "Helvetica Neue", "Helvetica", "Roboto Light", "Arial", "Verdana", "sans-serif";
         background-image: none;
-        background-color: tomato;
+        background-color: #c95820;
+    }
+    .iconMas {
+        color: #c95820;
+        border-radius: 50px;
+        width: 27px;
+        height: 1.812em;
+        border: solid 1px;
+    }
+    .iconMas span {
+        margin: 5px 3px 0 0;
+    }
+    .resumenOrden {
+        background-color: #f8f8f8;
+        border-radius: 20px;
+        padding: 1em 2em 2em 2em;
+    }
+    .resumenOrden label {
+        float: right;
+        background-color: #b0afb5;
+        color: white;
+        padding: 8px;
+        border-radius: 25px;
+        margin: -9px 0 0 0;
+    }
+    #btn-delete {
+        float: right;
+        background-color: #c95820;
+        padding: 2px 6px 6px 6px;
+        color: white;
+        border-radius: 50px;
+        margin: -8px -19px 0px 7px;
+    }
+    #btn-delete a {
+        margin: 5px 3px 0 0;
+    }
+    .divContentCarrito {
+        background-color: #f8f8f8;
+        border-radius: 20px;
+    }
+    .footerDivCarrito {
+        background-color: #c95820;
+        color: white;
+        border-bottom-left-radius: 20px;
+        border-bottom-right-radius: 20px;
+        padding: 1em 2em 2em 2em;
     }
 </style>

@@ -1,23 +1,4 @@
-<!-- <div id="Orden" data-role="view" data-title="" data-layout="main" data-model="app.orden.addItemViewModel" data-init="app.orden.onShow" data-after-show="app.orden.cargaPosAlmacenesDespachador">
-    <div id="divMapMarker" align="center">
-    </div>
-    <div id="map" style="width:100%;"></div>
-    <input id="miLatLong" type="hidden" />
-    <form>
-        <ul data-role="listview" data-style="inset">
-            <li>
-                <label class="km-required km-label-above" style="color:white;">Direccion: 
-                    <input id="miDireccion" type="text" style="color:white;" />
-                </label>
-            </li>
-        </ul>
-    </form>
-    <div class="button-group">
-        <a data-role="button" href="index.html">Regresar</a>
-        <a data-role="button" data-bind="events: { click: onSaveClick }">Confirmar</a>
-    </div>
-</div> -->
-<div id="Orden" data-role="view" data-title="¿Cuál es tu ubicación?" data-layout="main" data-model="app.orden.ordenModel" data-show="app.orden.onShow" data-after-show="app.orden.afterShow">
+<div id="Orden" data-role="view" data-title="Marca tu ubicación" data-layout="main" data-model="app.orden.ordenModel" data-show="app.orden.onShow" data-after-show="app.orden.afterShow">
     <header data-role="header">
         <div id="headerOrden" data-role="navbar" class="header-text">
             <span style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis; text-align: center; display: block; margin-left: 70px; margin-right: 70px;" data-role="view-title"></span>
@@ -28,38 +9,31 @@
     </div>
     <div id="mapOrden" style="width:100%;"></div>
     <input id="miLatLong" type="hidden" />
-    <form>
-        <ul data-role="listview" data-style="inset">
-            <li>
-                <label class="km-required km-label-above" style="color:white;">Direccion:
-                    <input id="miDireccion" type="text" style="color:white;" />
-                </label>
-            </li>
-        </ul>
-    </form>
-    <div class="button-group">
-        <a data-role="button" href="index.html">Regresar</a>
-        <a data-role="button" data-bind="events: { click: addNuevaOrden }">Confirmar</a>
+    <div id="footerOrden" data-role="footer">
+        <div id="divDatosOrden">
+            <input id="miDireccion" type="text" placeholder="Mi dirección" />
+            <a data-role="button" style="position: static;float: right;padding: 0.80em .688em;" data-bind="events: { click: addNuevaOrden }">Confirmar</a>
+            <h2 id="tagSucursal">Marque en el mapa su ubicación</h2>
+        </div>
     </div>
     <!--  Certain features like grouping and inset styling are not supported when endless scroll is enabled. -->
-    <form class="km-filter-form custom-filter">
+    <!--     <form class="km-filter-form custom-filter">
         <div class="km-filter-wrap">
-            <!--             id="buscarOrden" -->
             <input type="serach" placeholder="Search..." data-bind="{events:{keyup: searchChange}}">
         </div>
-    </form>
-    <ul data-role="listview" data-auto-bind="false" data-style="" data-template="ordenModelTemplate" data-bind="{ source: ordenModel.dataSource}">
-    </ul>
+    </form> -->
+    <!--     <ul data-role="listview" data-auto-bind="false" data-style="" data-template="ordenModelTemplate" data-bind="{ source: ordenModel.dataSource}">
+    </ul> -->
     <!-- START_CUSTOM_CODE_storeModel -->
     <!-- Add custom code here. For more information about custom code, see http://docs.telerik.com/platform/screenbuilder/troubleshooting/how-to-keep-custom-code-changes -->
     <!-- END_CUSTOM_CODE_storeModel -->
-    <script type="text/x-kendo-template" id="ordenModelTemplate">
+    <!--     <script type="text/x-kendo-template" id="ordenModelTemplate">
         <div class="image-with-text">
             <img src="#: data['PictureUrl'] #" width="100%" height="100%">
             <h3><span class="#: data.icon() #"></span>#: data['Descripcion'] #</h3>
             <p>Dirección: #: data['Detalle'] #</p>
         </div>
-    </script>
+    </script> -->
 </div>
 <style>
     .km-nova h1,
@@ -71,13 +45,29 @@
     .km-nova p {
         color: white;
     }
-    #headerOrden {
-        /*         background-image: -webkit-gradient(linear, left top, left bottom, from(#2e3246), to(#242736));
-        background-image: -webkit-linear-gradient(top, #2e3246 0, #242736 100%);
-        background-image: linear-gradient(to bottom, #2e3246 0, #242736 100%); */
-        
+    #headerOrden,
+    #footerOrden {
         font: normal 1em "Helvetica Neue", "Helvetica", "Roboto Light", "Arial", "Verdana", "sans-serif";
         background-image: none;
-        background-color: tomato;
+        background-color: #c95820;
+        /*         font-size: 1.2em; */
+        /*         line-height: 2.78em; */
+    }
+    #miDireccion {
+        /*         width: 75%;
+        border-radius: 20px;
+        padding: 0 0 0 20px;
+        border: 0px; */
+        
+        width: 70%;
+        border-radius: 20px;
+        padding: 2px 0px 0px 20px;
+        font-size: 1.2em;
+        border: 0px solid;
+        border-color: #c95820;
+    }
+    #tagSucursal {
+        font-size: 15px;
+        margin: 0 0 0 20px;
     }
 </style>

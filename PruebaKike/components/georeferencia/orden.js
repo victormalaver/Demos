@@ -10,7 +10,7 @@ app.orden = kendo.observable({
     var dataProvider = app.data.pruebaKike,
         cargaPosAlmacenesDespachador = function (dataSource, miLatLong, miArgument) {
             $("#mapOrden").remove();
-            var alto = $(window).height() - 95;
+            var alto = $(window).height() - $("#headerOrden").height();
             var div = $("<div id='mapOrden' style='width:100%;height:" + alto + "px;' ></div>").text("");
             $("#divMapOrden").after(div);
 
@@ -82,7 +82,7 @@ app.orden = kendo.observable({
                 icon: iconMiUbicacion
             }).bindPopup("<b>Estoy aquí:</b></br>" + miArgument));
 
-            function update() {
+            function update(Sucursal) {
                 return function (e) {
                     if (miUbicacion) {
                         map.removeLayer(miUbicacion);
@@ -97,6 +97,7 @@ app.orden = kendo.observable({
                     miUbicacion.addTo(map);
 
                     $("#miLatLong").val(miLatLong);
+                    $("#tagSucursal").text(Sucursal);
                 }
             }
 
@@ -114,7 +115,7 @@ app.orden = kendo.observable({
 
                         var rangoAtencion = L.circle(ordenLatLong, dataSource.at(i).Radio, {
                             color: 'LightGreen'
-                        }).addTo(map).on('click', update());
+                        }).addTo(map).on('click', update(dataSource.at(i).Descripcion));
                     }
                 }
             });
@@ -368,15 +369,25 @@ app.orden = kendo.observable({
                     }
                 });
                 dataSourceOrdenes.fetch(function () {
-                    app.mobileApp.navigate('#components/georeferencia/agregar.html');
-                    return;
-                    if ($("#miDireccion").val() == "") {
-                        alert("Ingrese su dirección");
-                        return;
-                    }
+
                     var latitude = parseFloat($("#miLatLong").val().substring(0, $("#miLatLong").val().indexOf(",")));
                     var longitude = parseFloat($("#miLatLong").val().substring($("#miLatLong").val().indexOf(",") + 1, $("#miLatLong").val().length));
 
+                    if ($("#miLatLong").val() == "") {
+                        alert("Marque un punto dentro del radio de cobertura");
+                        return;
+                    }
+                    
+                    if ($("#miDireccion").val() == "") {
+                        alert("Ingrese su dirección");
+                        $("#miDireccion").focus();
+                        return;
+                    }
+
+                    app.mobileApp.navigate('#components/georeferencia/carrito.html?latitude=' + latitude + '&longitude=' + longitude + '&direccion=' + $("#miDireccion").val());
+                    $("#btnGenerarOrden").attr("data-enable", "true");
+                    $("#btnGenerarOrden").attr("class", "km-widget km-button");
+                    return;
                     total = dataSourceOrdenes.total() + 1;
                     var orden = "005-" + total;
                     dataSourceOrdenes.add({

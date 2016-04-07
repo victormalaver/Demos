@@ -1,5 +1,5 @@
 <script src="components/georeferencia/database/platos.js"></script>
-<div data-role="view" data-init="mobileListViewPullWithEndless" data-show="openModalViewPlatos" data-title="Seleccione un plato">
+<div id="Platos" data-role="view" data-show="mobileListViewPullWithEndless" data-title="Seleccione un plato">
     <header data-role="header">
         <div id="headerPlatos" data-role="navbar" class="header-text">
             <span style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis; text-align: center; display: block; margin-left: 70px; margin-right: 70px;" data-role="view-title"></span>
@@ -25,7 +25,7 @@
                 </br>
                 <h2>#: data['Plato'] #:</h2>
                 </br>
-                <h2 class="km-badge km-listview-item-badge" style="background-color:tomato;">S/. #: data['Precio'] #</h2>
+                <h2 class="km-badge km-listview-item-badge">S/. #: data['Precio'] #</h2>
                 </br>
                 <a data-role="button" type="idPlato" onclick="verOrden('#: data['Id'] #','#: data['Plato'] #','#: data['Precio'] #' );">Continuar</a>
             </div>
@@ -36,13 +36,13 @@
     <img src="components/georeferencia/images/logoModalPlatos.png" style="width: 80%;" />
     <h2>Seleccione el plato principal</h2>
 </div>
-<script> 
-    function verOrden(IdEntrada, Entrada, PrecioEntrada, IdPlato, Plato, PrecioPlato) {
-        // app.mobileApp.navigate('#components/georeferencia/orden.html?IdEntrada=' + IdEntrada + '&Entrada=' + Entrada + '&PrecioEntrada=' + PrecioEntrada + '&IdPlato=' + IdPlato + '&Plato=' + Plato + '&PrecioPlato=' + PrecioPlato);
-        app.mobileApp.navigate('#components/georeferencia/agregar.html');
+<script>
+    function verOrden(IdPlato, Plato, PrecioPlato, IdEntrada, Entrada, PrecioEntrada) {
+        app.mobileApp.navigate('#components/georeferencia/agregar.html?IdPlato=' + IdPlato + '&Plato=' + Plato + '&PrecioPlato=' + PrecioPlato + '&IdEntrada=' + IdEntrada + '&Entrada=' + Entrada + '&PrecioEntrada=' + PrecioEntrada);
     }
- 
+
     function mobileListViewPullWithEndless(e) {
+        openModalViewPlatos();
         var dataSource = new kendo.data.DataSource({
             data: platos,
             schema: {
@@ -61,11 +61,12 @@
             endlessScroll: false
         });
 
-        // console.log($("i[type=idPlato]").attr("onclick"));
-        var onclick = $("a[type=idPlato]").attr("onclick");
-        // console.log("'" + e.view.params.Id + "','" + e.view.params.Entrada + "','" + e.view.params.Precio + "'");
-        var newUrl = ",'" + e.view.params.Id + "','" + e.view.params.Entrada + "','" + e.view.params.Precio + "');";
-        $("a[type=idPlato]").attr("onclick", onclick.replace(");", "") + newUrl);
+        $("a[type=idPlato]").each(function (index) {
+            var onclick = $(this).attr("onclick");
+            var newUrl = ",'" + e.view.params.Id + "','" + e.view.params.Entrada + "','" + e.view.params.Precio + "');";
+            $(this).attr("onclick", onclick.replace(");", "") + newUrl);
+        });
+
     }
 
     function closeModalViewPlatos() {
@@ -85,7 +86,7 @@
         });
         setTimeout(function () {
             closeModalViewPlatos();
-        }, 1500);
+        }, 500);
     }
 </script>
 <style>
@@ -102,7 +103,7 @@
         background-image: linear-gradient(to bottom, #2e3246 0, #242736 100%); */
         
         background-image: none;
-        background-color: tomato;
+        background-color: #c95820;
     }
     #listviewPlatos>li {
         /*         padding-left: 0; */
@@ -117,8 +118,8 @@
     .thumb img {
         width: inherit;
         /*         padding: 0; */
-        
-        -webkit-mask-image: linear-gradient(to bottom, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 1) 80%, rgba(255, 255, 255, 0) 100%);
+        /* GRADIENTE: */
+        /*         -webkit-mask-image: linear-gradient(to bottom, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 1) 80%, rgba(255, 255, 255, 0) 100%); */
     }
     .thumb > div div {
         /*         padding: 20px 40px; */

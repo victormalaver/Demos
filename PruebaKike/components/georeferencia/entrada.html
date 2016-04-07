@@ -1,5 +1,5 @@
 <script src="components/georeferencia/database/entradas.js"></script>
-<div data-role="view" data-init="mobileListViewPullWithEndless" data-show="openModalViewEntradas" data-title="Seleccione una entrada">
+<div id="Entradas" data-role="view" data-init="mobileListViewPullWithEndless" data-show="openModalViewEntradas" data-title="Seleccione una entrada">
     <header data-role="header">
         <div id="headerEntradas" data-role="navbar" class="header-text">
             <span style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis; text-align: center; display: block; margin-left: 70px; margin-right: 70px;" data-role="view-title"></span>
@@ -23,9 +23,9 @@
             <div>
                 </br>
                 </br>
-                <h2>#: data['Entrada'] #:</h2>
+                <h2>#: data['Entrada'] #</h2>
                 </br>
-                <h2 class="km-badge km-listview-item-badge" style="background-color:tomato;">S/. #: data['Precio'] #</h2>
+                <h2 class="km-badge km-listview-item-badge">S/. #: data['Precio'] #</h2>
                 </br>
                 <a data-role="button" onclick="verListaPlatos('#: data['Id'] #','#: data['Entrada'] #','#: data['Precio'] #' );">Continuar</a>
             </div>
@@ -45,6 +45,8 @@
     }
 
     function mobileListViewPullWithEndless(e) {
+
+
         var dataSource = new kendo.data.DataSource({
             data: entradas,
             schema: {
@@ -81,7 +83,7 @@
         });
         setTimeout(function () {
             closeModalViewEntradas();
-        }, 1500);
+        }, 500);
     }
 </script>
 <style>
@@ -98,12 +100,18 @@
         background-image: linear-gradient(to bottom, #2e3246 0, #242736 100%); */
         
         background-image: none;
-        background-color: tomato;
+        background-color: #c95820;
     }
     #listviewEntradas>li {
         /*         padding-left: 0; */
         
         padding: 0;
+    }
+    .km-list>li>* {
+        line-height: 0;
+    }
+    .km-nova .km-list>li {
+        border-style: none;
     }
     .thumb {
         /* position: relative; */
@@ -113,8 +121,8 @@
     .thumb img {
         width: inherit;
         /*         padding: 0; */
-        
-        -webkit-mask-image: linear-gradient(to bottom, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 1) 80%, rgba(255, 255, 255, 0) 100%);
+        /*GRADIENTE: */
+        /*         -webkit-mask-image: linear-gradient(to bottom, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 1) 80%, rgba(255, 255, 255, 0) 100%); */
     }
     .thumb > div div {
         /*         padding: 20px 40px; */
@@ -133,6 +141,7 @@
         text-transform: uppercase;
         color: rgba(0, 0, 0, 0.5);
         position: inherit;
+        margin: 6%;
     }
     .thumb div div i {
         color: rgba(0, 0, 0, 0.5);

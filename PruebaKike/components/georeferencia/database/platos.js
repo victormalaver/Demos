@@ -32,7 +32,7 @@ var platos = [{
     "Url":"RocotoRelleno",
     "Id": "bf419680-eaf2-11e5-8a5e-4fbfba4606ef"
     }, {
-    "Plato": "Fetuchini a la Carbonara",
+    "Plato": "Fetuchini",
     "Precio": 20,
     "Foto": "91fc89a0-eaf2-11e5-9f19-d1b4001b752e",
     "CreatedAt": "2016-03-15T21:12:08.182Z",
