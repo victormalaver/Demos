@@ -1,9 +1,12 @@
 <script src="components/georeferencia/database/entradas.js"></script>
-<div id="Entradas" data-role="view" data-init="mobileListViewPullWithEndless" data-show="openModalViewEntradas" data-title="Seleccione una entrada">
+<div id="Entradas" data-role="view" data-init="mobileListViewPullWithEndless" data-show="openModalViewEntradas" data-title="Entradas">
     <header data-role="header">
         <div id="headerEntradas" data-role="navbar" class="header-text">
             <span style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis; text-align: center; display: block; margin-left: 70px; margin-right: 70px;" data-role="view-title"></span>
             <a data-role="backbutton" data-align="left">Cancel</a>
+            <a data-role="button" class="carritoImagen" data-align="right">
+                <span class="countCarrito"></span>
+            </a>
         </div>
     </header>
     <ul data-role="listview" data-auto-bind="false" data-style="inset" id="listviewEntradas"></ul>
@@ -84,6 +87,22 @@
         setTimeout(function () {
             closeModalViewEntradas();
         }, 500);
+        countCarrito();
+    }
+
+    function countCarrito() {
+        if (localStorage.getItem("ordenesCarrito") != undefined && JSON.parse(localStorage.getItem('ordenesCarrito')).length > 0) {
+            $(".carritoImagen").css("opacity", "1");
+            $(".countCarrito").css("color", "#c95820");
+            $(".countCarrito").css("background-color", "white");
+            var ordenesGuardas = JSON.parse(localStorage.getItem('ordenesCarrito'));
+            $(".countCarrito").text(ordenesGuardas.length < 10 ? "0" + ordenesGuardas.length : ordenesGuardas.length);
+        } else {
+            $(".countCarrito").css("color", "transparent");
+            $(".countCarrito").css("background-color", "transparent");
+            $(".countCarrito").text("00");
+            $(".carritoImagen").css("opacity", "0.3");
+        }
     }
 </script>
 <style>
@@ -182,5 +201,17 @@
         100% {
             transform: translateY(0px);
         }
+    }
+    .countCarrito {
+        color: transparent;
+        background-color: transparent;
+        border-radius: 6px !important;
+        font-size: 15px !important;
+    }
+    .carritoImagen {
+        background-image: url('components/georeferencia/images/carrito.png') !important;
+        background-size: 66% auto !important;
+        background-repeat: no-repeat !important;
+        background-position: 5px 7px !important;
     }
 </style>

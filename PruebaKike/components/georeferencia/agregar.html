@@ -1,9 +1,11 @@
-<div id="agregarCarrito" data-role="view" data-title="Agregar orden" data-layout="main" data-model="app.entradas">
+<div id="agregarCarrito" data-role="view" data-title="Carrito" data-layout="main" data-model="app.entradas" data-show="countCarrito">
     <header data-role="header">
         <div id="headerAgregar" data-role="navbar" class="header-text">
             <span style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis; text-align: center; display: block; margin-left: 70px; margin-right: 70px;" data-role="view-title"></span>
             <a data-role="backbutton" data-align="left">Cancel</a>
-            <a data-role="button" id="carritoImagen" data-align="right" data-bind="events: { click: onSaveClick }"></a>
+            <a data-role="button" class="carritoImagen" data-align="right">
+                <span class="countCarrito"></span>
+            </a>
         </div>
     </header>
     </br>
@@ -18,7 +20,7 @@
         <img src="components/georeferencia/images/fondoRestaurant.png" style="width:40%;" />
         <div class="button-group button-group-vertical">
             <a data-role="button" data-rel="actionsheet" href="#actionsheet">Agregar al carrito</a>
-            <a data-role="button" onclick="readyAgregar('carrito');">Pedir</a>
+            <a data-role="button" onclick="readyAgregar('carrito');">Ver el Carrito</a>
         </div>
     </div>
     <ul id="actionsheet" data-role="actionsheet" data-open="readyAgregar" data-close="goToEntradas">
@@ -56,12 +58,6 @@
         padding: 1.5em;
         width: 80%;
         background-color: #c95820;
-    }
-    #carritoImagen {
-        background-image: url('components/georeferencia/images/carrito.png');
-        background-size: 100% auto;
-        background-repeat: no-repeat;
-        margin: 4px;
     }
     #headerAgregar {
         font: normal 1em "Helvetica Neue", "Helvetica", "Roboto Light", "Arial", "Verdana", "sans-serif";
@@ -120,12 +116,13 @@
             $("#ordenEntrada").text("Error al generar la orden");
             $("#ordenPlato").text("");
         }
-        goToEntradas(carrito);
+        carrito == "carrito" ? app.mobileApp.navigate('#components/georeferencia/carrito.html') : "";
     }
 
-    function goToEntradas(carrito) {
-            app.mobileApp.navigate(carrito == "carrito" ? '#components/georeferencia/carrito.html' : '#components/georeferencia/entrada.html');
-        }
+    function goToEntradas(e) {
+        app.mobileApp.navigate('#components/georeferencia/entrada.html');
+    }
+
         // function readyAgregar(e) {
         //     if (localStorage.getItem("ordenesCarrito") != undefined) {
         //         var ordenesGuardas = JSON.parse(localStorage.getItem('ordenesCarrito'));

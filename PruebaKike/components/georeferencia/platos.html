@@ -1,9 +1,12 @@
 <script src="components/georeferencia/database/platos.js"></script>
-<div id="Platos" data-role="view" data-show="mobileListViewPullWithEndless" data-title="Seleccione un plato">
+<div id="Platos" data-role="view" data-show="mobileListViewPullWithEndless" data-title="Platos">
     <header data-role="header">
         <div id="headerPlatos" data-role="navbar" class="header-text">
             <span style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis; text-align: center; display: block; margin-left: 70px; margin-right: 70px;" data-role="view-title"></span>
             <a data-role="backbutton" data-align="left">Cancel</a>
+            <a data-role="button" class="carritoImagen" data-align="right">
+                <span class="countCarrito"></span>
+            </a>
         </div>
     </header>
     <ul data-role="listview" data-auto-bind="false" data-style="inset" id="listviewPlatos"></ul>
@@ -66,7 +69,7 @@
             var newUrl = ",'" + e.view.params.Id + "','" + e.view.params.Entrada + "','" + e.view.params.Precio + "');";
             $(this).attr("onclick", onclick.replace(");", "") + newUrl);
         });
-
+		countCarrito();
     }
 
     function closeModalViewPlatos() {

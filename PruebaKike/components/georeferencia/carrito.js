@@ -50,6 +50,8 @@ app.carrito = kendo.observable({
             app.mobileApp.navigate('#components/georeferencia/index.html');
         }
         $("#ordenesGuardadas").html(html.join(''));
+
+        countCarrito();
     },
     afterShow: function () {}
 });
@@ -59,6 +61,8 @@ function deleteOrden(id) {
         ordenesGuardas.splice(id, 1);
         localStorage.setItem("ordenesCarrito", JSON.stringify(ordenesGuardas));
         app.carrito.onShow();
+        countCarrito();
+
     }
     // START_CUSTOM_CODE_carrito
     // Add custom code here. For more information about custom code, see http://docs.telerik.com/platform/screenbuilder/troubleshooting/how-to-keep-custom-code-changes
@@ -74,7 +78,8 @@ function deleteOrden(id) {
             },
             error: function (e) {
                 if (e.xhr) {
-                    alert(JSON.stringify(e.xhr));
+                    // alert(JSON.stringify(e.xhr));
+                    alert("No se generó la orden, intente nuevamente.");
                 }
             }
         },
@@ -96,31 +101,35 @@ function deleteOrden(id) {
                     var direccion = $.urlParam('direccion');
                     var latitude = parseFloat($.urlParam('latitude'));
                     var longitude = parseFloat($.urlParam('longitude'));
+                    var idsucursal = $.urlParam('idsucursal');
+                    var codsucursal = $.urlParam('codsucursal');
                     var costo = parseInt($("#precioTotalOrden").text());
                     console.log(direccion);
                     console.log(latitude);
                     console.log(longitude);
+                    console.log(idsucursal);
+                    console.log(codsucursal);
                     console.log($("#precioTotalOrden").text());
 
-
                     total = dataSource.total() + 1;
-                    var orden = "005-" + total;
+                    var orden = codsucursal + "-" + total;
                     dataSource.add({
                         Costo: costo,
                         Entrada: "9c9166e0-ea31-11e5-a783-791e4009fe86",
                         Plato: "bf419680-eaf2-11e5-8a5e-4fbfba4606ef",
                         Users: "84b4feb6-ea22-11e5-9f71-1bcae6837736",
                         Orden: orden,
-                        Sucursal: "39a96f60-f6bf-11e5-a280-e937d074d9c8",
+                        Sucursal: idsucursal,
                         Direccion: direccion,
                         Localizacion: {
                             longitude: longitude,
                             latitude: latitude
                         }
                     });
-                    dataSource.one('change', function (e) {
+                    dataSource.one('change', function (e) { 
                         // app.mobileApp.navigate('#:back');
                         app.mobileApp.navigate('#components/georeferencia/index.html');
+                        $("#modalSuccesOrden").kendoMobileModalView("open");
                     });
                     dataSource.sync();
                 });

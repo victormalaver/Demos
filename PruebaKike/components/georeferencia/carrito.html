@@ -1,8 +1,11 @@
-<div id="carritoCompras" data-role="view" data-title="Mi Pedido" data-layout="main" data-model="app.carrito" data-show="app.carrito.onShow">
+<div id="carritoCompras" data-role="view" data-title="Carrito de Compras" data-layout="main" data-model="app.carrito.carritoModel" data-show="app.carrito.onShow">
     <header data-role="header">
         <div id="headerCarrito" data-role="navbar" class="header-text">
             <span style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis; text-align: center; display: block; margin-left: 70px; margin-right: 70px;" data-role="view-title"></span>
             <a data-role="backbutton" data-align="left">Cancel</a>
+            <a data-role="button" class="carritoImagen" data-align="right">
+                <span class="countCarrito"></span>
+            </a>
         </div>
     </header>
     <ul data-role="listview" data-auto-bind="false">
@@ -12,11 +15,12 @@
     <div align="center">
         <div class="button-group button-group-vertical">
             </br>
-            <a data-role="button" href="#components/georeferencia/orden.html" style="background-color:#c95820;">Mi ubicacion</a>
-            <a id="btnGenerarOrden" data-role="button"  style="background-color:#c95820;" data-bind="events: { click: carritoModel.addOrdenCarrito }">Pedir</a>
+            <a data-role="button" href="#components/georeferencia/orden.html" style="background-color:#c95820;">Mi Ubicacion</a>
+            <a id="btnGenerarOrden" data-role="button" style="background-color:#c95820;" data-bind="events: { click: addOrdenCarrito }">Generar Orden</a>
         </div>
     </div>
 </div>
+
 <style>
     .km-view,
     #carritoCompras {

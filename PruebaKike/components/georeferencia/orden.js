@@ -82,7 +82,7 @@ app.orden = kendo.observable({
                 icon: iconMiUbicacion
             }).bindPopup("<b>Estoy aquí:</b></br>" + miArgument));
 
-            function update(Sucursal) {
+            function update(Sucursal, IdSucursal, CodSucursal) {
                 return function (e) {
                     if (miUbicacion) {
                         map.removeLayer(miUbicacion);
@@ -98,6 +98,8 @@ app.orden = kendo.observable({
 
                     $("#miLatLong").val(miLatLong);
                     $("#tagSucursal").text(Sucursal);
+                    $("#tagIdSucursal").text(IdSucursal);
+                    $("#tagCodSucursal").text(CodSucursal);
                 }
             }
 
@@ -115,7 +117,7 @@ app.orden = kendo.observable({
 
                         var rangoAtencion = L.circle(ordenLatLong, dataSource.at(i).Radio, {
                             color: 'LightGreen'
-                        }).addTo(map).on('click', update(dataSource.at(i).Descripcion));
+                        }).addTo(map).on('click', update(dataSource.at(i).Descripcion, dataSource.at(i).Id, dataSource.at(i).Codigo));
                     }
                 }
             });
@@ -377,36 +379,17 @@ app.orden = kendo.observable({
                         alert("Marque un punto dentro del radio de cobertura");
                         return;
                     }
-                    
+
                     if ($("#miDireccion").val() == "") {
                         alert("Ingrese su dirección");
                         $("#miDireccion").focus();
                         return;
                     }
 
-                    app.mobileApp.navigate('#components/georeferencia/carrito.html?latitude=' + latitude + '&longitude=' + longitude + '&direccion=' + $("#miDireccion").val());
-                    $("#btnGenerarOrden").attr("data-enable", "true");
+                    app.mobileApp.navigate('#components/georeferencia/carrito.html?latitude=' + latitude + '&longitude=' + longitude + '&direccion=' + $("#miDireccion").val() + '&idsucursal=' + $("#tagIdSucursal").text()+ '&codsucursal=' + $("#tagCodSucursal").text()); 
+                    $("#btnGenerarOrden").removeAttr("data-enable");
+                    $("#btnGenerarOrden").removeAttr("disabled");
                     $("#btnGenerarOrden").attr("class", "km-widget km-button");
-                    return;
-                    total = dataSourceOrdenes.total() + 1;
-                    var orden = "005-" + total;
-                    dataSourceOrdenes.add({
-                        Costo: 20,
-                        Entrada: "a4d0f450-ea32-11e5-bd54-bf5696bb237b",
-                        Plato: "0c6200d0-eaf3-11e5-8a5e-4fbfba4606ef",
-                        Users: "84b4feb6-ea22-11e5-9f71-1bcae6837736",
-                        Orden: orden,
-                        Sucursal: "1fc5f950-f6c0-11e5-a280-e937d074d9c8",
-                        Localizacion: {
-                            longitude: longitude,
-                            latitude: latitude
-                        }
-                    });
-                    dataSourceOrdenes.one('change', function (e) {
-                        // app.mobileApp.navigate('#:back');
-                        app.mobileApp.navigate('#components/georeferencia/index.html');
-                    });
-                    dataSourceOrdenes.sync();
                 });
 
             },

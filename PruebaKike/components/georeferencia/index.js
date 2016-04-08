@@ -139,9 +139,6 @@ app.entradas = kendo.observable({
                     "vertical-align": "middle"
                 });
             },
-            closeModalInfoGeoref: function (e) {
-                $("#modalInfoGeoref").kendoMobileModalView("close");
-            },
             currentItem: null
         });
 

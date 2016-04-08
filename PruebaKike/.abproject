@@ -2,17 +2,19 @@
   "ProjectName": "PruebaKike",
   "ProjectGuid": "09817979-b01e-45fc-b4fc-468c9ecd9414",
   "projectVersion": 1,
-  "AppIdentifier": "com.telerik.DemosValmar",
+  "AppIdentifier": "valmar.demos",
   "DisplayName": "Demos Valmar",
   "Author": "Valmar Group",
   "Description": "Presentación de funcionalidades del móvil aplicados a escenarios reales. ",
   "BundleVersion": "1.0",
   "AndroidVersionCode": "1",
   "iOSDeviceFamily": [
-    "1",
-    "2"
+    "1"
   ],
-  "iOSBackgroundMode": [],
+  "iOSBackgroundMode": [
+    "location",
+    "fetch"
+  ],
   "ProjectTypeGuids": "{070BCB52-5A75-4F8C-A973-144AF0EAFCC9}",
   "FrameworkVersion": "3.7.0",
   "AndroidPermissions": [
