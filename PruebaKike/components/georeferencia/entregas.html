@@ -1,29 +1,36 @@
 <div id="Entrega" data-role="view" data-title="Mapa de Ordenes" data-layout="main" data-model="app.entrega.entregaModel" data-show="app.entrega.onShow" data-after-show="app.entrega.afterShow">
     <header data-role="header">
-        <div data-role="navbar" class="header-text">
+        <div id="headerMapEntregas" data-role="navbar" class="header-text">
             <span style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis; text-align: center; display: block; margin-left: 70px; margin-right: 70px;" data-role="view-title"></span>
             <a data-role="backbutton" data-align="left">Cancel</a>
         </div>
     </header>
-    <div id="divMapEntrega" align="center">
-    </div>
-    <div id="mapEntrega" style="width:100%;"></div>
-    <!--  Certain features like grouping and inset styling are not supported when endless scroll is enabled. -->
-    <form class="km-filter-form custom-filter">
+    <form class="km-filter-form custom-filter" style="position: absolute;margin-left: 4rem;z-index: 1;width: 65%;">
         <div class="km-filter-wrap">
             <input id="buscarOrden" type="serach" placeholder="Search..." data-bind="{events:{keyup: searchChange}}">
         </div>
     </form>
-    <ul data-role="listview" data-auto-bind="false" data-style="" data-template="entregasModelTemplate" data-bind="{ source: entregaModel.dataSource}">
-    </ul>
+    <div id="divMapEntrega" align="center">
+    </div>
+    <div id="mapEntrega" style="width:100%;"></div>
+    <!--  Certain features like grouping and inset styling are not supported when endless scroll is enabled. -->
+    <!--     <ul data-role="listview" data-auto-bind="false" data-style="" data-template="entregasModelTemplate" data-bind="{ source: entregaModel.dataSource}">
+    </ul> -->
     <!-- START_CUSTOM_CODE_storeModel -->
     <!-- Add custom code here. For more information about custom code, see http://docs.telerik.com/platform/screenbuilder/troubleshooting/how-to-keep-custom-code-changes -->
     <!-- END_CUSTOM_CODE_storeModel -->
-    <script type="text/x-kendo-template" id="entregasModelTemplate">
+    <!--     <script type="text/x-kendo-template" id="entregasModelTemplate">
         <div class="image-with-text">
             <img src="#: data['PictureUrl'] #" width="30%" height="30%">
             <h3><span class="#: data.icon() #"></span>Orden: #: data['Orden'] #</h3>
             <p>Costo: S/. #: data['Costo'] #</p>
         </div> 
-    </script>
+    </script> -->
 </div>
+<style>
+    #headerMapEntregas {
+        font: normal 1em "Helvetica Neue", "Helvetica", "Roboto Light", "Arial", "Verdana", "sans-serif";
+        background-image: none;
+        background-color: #c95820;
+    }
+</style>

@@ -10,6 +10,7 @@
             app.mobileApp = new kendo.mobile.Application(document.body, {
                 transition: 'slide',
                 skin: 'nova',
+                initial: 'components/georeferencia/index.html'
             });
         });
     };

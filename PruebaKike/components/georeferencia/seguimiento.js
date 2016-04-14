@@ -102,7 +102,7 @@ function muestraReloj(fechaMod) {
 
             var ubicSeguimientos = "";
             dataSource.fetch(function () {
-                for (var i = 0; i < 1; i++) {//cantidad de órdenes del cliente
+                for (var i = 0; i < 1; i++) { //cantidad de órdenes del cliente
                     if (dataSource.at(i).Localizacion && dataSource.at(i).Users.toString() == "56dccaa0-fd8b-11e5-a92e-af87711392e8") {
                         var pedido = [];
                         for (var j = 0; j < dataSource.at(i).Entrada.length; j++) {
@@ -116,6 +116,12 @@ function muestraReloj(fechaMod) {
                         muestraReloj(dataSource.at(0).ModifiedAt);
                         map.panTo(new L.LatLng(parseFloat(ubicSeguimientos.substring(0, ubicSeguimientos.indexOf(","))), parseFloat(ubicSeguimientos.substring(ubicSeguimientos.indexOf(",") + 1, ubicSeguimientos.length))));
                         // map.setView(new L.LatLng(40.737, -73.923), 8);
+
+                        miLatLong = miLatLong.toString();
+                        var a = new L.LatLng(parseFloat(ubicSeguimientos.substring(0, ubicSeguimientos.indexOf(","))), parseFloat(ubicSeguimientos.substring(ubicSeguimientos.indexOf(",") + 1, ubicSeguimientos.length)));
+                        var b = new L.LatLng(parseFloat(miLatLong.substring(0, miLatLong.indexOf(","))), parseFloat(miLatLong.substring(miLatLong.indexOf(",") + 1, miLatLong.length)));
+                        $("#distanciaPedido").text(parseInt(a.distanceTo(b)));
+
                     }
                 }
 

@@ -16,6 +16,8 @@
             </ul>
         </div>
     </header>
+    <input id="IdOrdenCambiar" type="hidden">
+    <input id="EstadoOrdenCambiar" type="hidden">
     <form class="km-filter-form custom-filter">
         <div class="km-filter-wrap">
             <input id="buscarOrdenListado" type="serach" placeholder="Search..." data-bind="{events:{keyup: searchChange}}">
@@ -29,7 +31,7 @@
     <script type="text/x-kendo-template" id="listadoModelTemplate">
         <div data-role="collapsible">
             <h3 class="naranja">Orden: #: data['Orden'] # <span class="km-badge km-listview-item-badge" style="font-size:inherit;margin-right:-3em;">S/. #: data['Costo'] #</span></h3>
-            <div align="right"><input type="checkbox" data-role="switch" data-prefix="#: data['Orden'] #" data-name="#: data['Id'] #" data-change="onChange" #if (data[ 'Estado']=='Entregado' ){#data-checked="true" #}#></div>
+            <div align="right"><input type="checkbox" data-role="switch" data-prefix="#: data['Orden'] #" data-name="#: data['Id'] #" data-change="onChangeEstadoOrden" #if (data[ 'Estado']=='Entregado' ){#data-checked="true" #}#></div>
             <ol>
                 <em class="naranja" style="position:absolute;margin-top:-44px;"> #= UsersExpanded #</em> # for (var i=0 ; i
                 <data[ 'EntradaExpanded'].length; i++) { # <li class="naranja">
@@ -40,7 +42,7 @@
         </div>
     </script>
     <ul id="actionsheetEstado" data-role="actionsheet">
-        <p id="titleEstadoOrden"></p>
+        <p id="titleEstadoOrden" style="font-size: 1.1em;color: white;"></p>
         <div data-role="footer">
             <div id="footerEstadoOrden" data-role="tabstrip">
                 <a onclick="closeActionSheet('actionsheetEstado')"><h1 style="margin: -19px 0 0 0;font-size: xx-large;color: white;">No</h1></br></a>

@@ -6,26 +6,25 @@ app.entrega = kendo.observable({
 
 });
 
-function onChange(e) {
+function onChangeEstadoOrden(e) {
     var Id = e.sender.options.name;
     var Orden = e.sender.options.prefix;
-    app.mobileApp.navigate('#components/georeferencia/listado.html?Id=' + Id + "&Estado=" + e.checked);
+    // app.mobileApp.navigate('#components/georeferencia/listado.html?Id=' + Id + "&Estado=" + e.checked);
+    $("#IdOrdenCambiar").val(Id);
+    $("#EstadoOrdenCambiar").val(e.checked);
 
     if (e.checked) { //si entregar
         $("#titleEstadoOrden").html("¿Entregar la orden " + Orden + " ?");
     } else {
         $("#titleEstadoOrden").html("¿Cambiar a pendiente la orden " + Orden + " ?");
     }
-
     $("#actionsheetEstado").data("kendoMobileActionSheet").open();
-
-
 }
 (function (parent) {
     var dataProvider = app.data.pruebaKike,
         cargaPosAlmacenesDespachador = function (dataSource, dataSourceSedes) {
             $("#mapEntrega").remove();
-            var alto = $(window).height() - 95;
+            var alto = $(window).height();
             var div = $("<div id='mapEntrega' style='width:100%;height:" + alto + "px;' ></div>").text("");
             $("#divMapEntrega").after(div);
 
@@ -396,16 +395,9 @@ function onChange(e) {
                 fetchFilteredData(entregaModel.get('paramFilter'), searchFilter);
             },
             cambiarEstadoOrden: function (e) {
-                $.urlParam = function (name) {
-                    var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
-                    if (results == null) {
-                        return null;
-                    } else {
-                        return results[1] || 0;
-                    }
-                }
-                var item = $.urlParam('Id');
-                var Estado = $.urlParam('Estado');
+
+                var item = $("#IdOrdenCambiar").val();
+                var Estado = $("#EstadoOrdenCambiar").val();
 
                 var dataSource = entregaModel.get('dataSource');
                 var itemData = dataSource.get(item);
@@ -420,8 +412,7 @@ function onChange(e) {
 
 
                 dataSource.one('sync', function (e) {
-                    app.mobileApp.navigate('#:back');
-					 $("#actionsheetEstado").data("kendoMobileActionSheet").close();
+                    $("#actionsheetEstado").data("kendoMobileActionSheet").close();
                 });
 
                 dataSource.one('error', function () {
