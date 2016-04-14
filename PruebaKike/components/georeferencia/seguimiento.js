@@ -1,23 +1,44 @@
 'use strict';
 
-app.orden = kendo.observable({
+app.seguimiento = kendo.observable({
     onShow: function () {},
     afterShow: function () {},
 });
+var fecha;
+
+function muestraReloj(fechaMod) {
+    if (fechaMod) {
+        fecha = fechaMod;
+    } else {
+        fechaMod = fecha;
+    }
+    var actual = new Date();
+    var milisegundos = actual - fechaMod;
+    var hora = parseInt(milisegundos / 3600000);
+    var restohora = milisegundos % 3600000;
+    var minuto = parseInt(restohora / 60000);
+    var restominuto = restohora % 60000;
+    var segundo = parseInt(restominuto / 1000);
+    document.getElementById("tiempoTranscurrido").innerHTML = (hora < 10 ? "0" + hora : hora) + ":" + (minuto < 10 ? "0" + minuto : minuto) + ":" + (segundo < 10 ? "0" + segundo : segundo);
+    setTimeout(muestraReloj, 1000);
+}
+
+
 
 
 (function (parent) {
     var dataProvider = app.data.pruebaKike,
         cargaPosAlmacenesDespachador = function (dataSource, miLatLong, miArgument) {
-            $("#mapOrden").remove();
-            var alto = $(window).height() - $("#headerOrden").height();
-            var div = $("<div id='mapOrden' style='width:100%;height:" + alto + "px;' ></div>").text("");
-            $("#divMapOrden").after(div);
+            miLatLong = [-12.110300550698781, -77.03691065311432]; //borrar esto por el GPS del despachador
+            $("#mapSeguimiento").remove();
+            var alto = $(window).height() - $("#headerSeguimiento").height();
+            var div = $("<div id='mapSeguimiento' style='width:100%;height:" + alto + "px;' ></div>").text("");
+            $("#divMapSeguimiento").after(div);
 
             //<![CDATA[
             // var restLatLong = [-12.105753065958925, -77.03500092029572];
-            var iconEntregados = L.icon({
-                iconUrl: 'Mapa/images/markerEntregados3.png', //iconUrl: 'Mapa/images/markerEntregados.png',
+            var iconMiUbicacion = L.icon({
+                iconUrl: 'Mapa/images/mapPinOver2.gif', //iconUrl: 'Mapa/images/markerEntregados.png',
                 // iconRetinaUrl: 'my-icon@2x.png',
                 // iconSize: [38, 95], 
                 iconAnchor: [15, 38], //X,Y
@@ -40,7 +61,7 @@ app.orden = kendo.observable({
                 // shadowAnchor: [22, 94]
             });
 
-            var iconMiUbicacion = L.icon({
+            var iconSeguimiento = L.icon({
                 iconUrl: 'Mapa/images/markerRestaurante5.png',
                 // iconRetinaUrl: 'my-icon@2x.png',
                 // iconSize: [38, 95],
@@ -54,13 +75,10 @@ app.orden = kendo.observable({
 
 
 
-            var map = new L.map('mapOrden', {
+            var map = new L.map('mapSeguimiento', {
                 center: miLatLong,
                 zoom: 15,
             });
-
-
-
             L.tileLayer('http://{s}.mqcdn.com/tiles/1.0.0/map/{z}/{x}/{y}.png', {
                 //attribution: "Map: Tiles Courtesy of MapQuest (OpenStreetMap, CC-BY-SA)",
                 subdomains: ["otile1", "otile2", "otile3", "otile4"],
@@ -70,73 +88,41 @@ app.orden = kendo.observable({
 
             var miUbicacion = new L.MarkerClusterGroup();
             var markerClientes = new L.MarkerClusterGroup();
-            var markerEntregados = new L.MarkerClusterGroup();
             //markers.addLayer(new L.Marker([1, 1]));
 
 
             miUbicacion.addTo(map);
             markerClientes.addTo(map);
-            markerEntregados.addTo(map);
+
 
             miUbicacion.addLayer(new L.Marker(miLatLong, {
                 icon: iconMiUbicacion
-            }).bindPopup("<b>Estoy aquí:</b></br>" + miArgument));
-
-            function update(Sucursal, IdSucursal, CodSucursal) {
-                return function (e) {
-                    if (miUbicacion) {
-                        map.removeLayer(miUbicacion);
-                    }
-                    miUbicacion = new L.MarkerClusterGroup();
-                    map.addLayer(miUbicacion);
-                    miLatLong = [parseFloat(e.latlng.lat), parseFloat(e.latlng.lng)]; //[43.465187, -80.52237200000002]; 
-                    // miUbicacion.removeLayer();
-                    miUbicacion.addLayer(new L.Marker(miLatLong, {
-                        icon: iconMiUbicacion
-                    }).bindPopup("<b>Enviar mi orden aquí: </b>" + miLatLong + "</br></br><b>Estoy aquí:</b></br>" + miArgument).openPopup());
-                    miUbicacion.addTo(map);
-
-                    $("#miLatLong").val(miLatLong);
-                    $("#tagSucursal").text(Sucursal);
-                    $("#tagIdSucursal").text(IdSucursal);
-                    $("#tagCodSucursal").text(CodSucursal);
-                }
-            }
+            }).bindPopup("<b>Mi pedido está aquí:</b></br>" + miArgument));
 
 
-            var ubicOrdenes = "";
+            var ubicSeguimientos = "";
             dataSource.fetch(function () {
-                for (var i = 0; i < dataSource.total(); i++) {
-                    if (dataSource.at(i).Localizacion) {
-                        ubicOrdenes = dataSource.at(i).Localizacion.replace(/Latitude:|Longitude:|&nbsp/gi, ""); //[43.465187, -80.52237200000002];
-                        var ordenLatLong = [parseFloat(ubicOrdenes.substring(0, ubicOrdenes.indexOf(","))), parseFloat(ubicOrdenes.substring(ubicOrdenes.indexOf(",") + 1, ubicOrdenes.length))];
-                        markerClientes.addLayer(new L.Marker(ordenLatLong, {
-                            icon: iconSucursal
-                        }).bindPopup("<b>" + dataSource.at(i).Descripcion + "</b></br>" + dataSource.at(i).Estado + "</br>" + dataSource.at(i).Detalle + "</br>" + "<img src='" + dataSource.at(i).PictureUrl + "'" + "width='100%'" + "height='100%'>"));
-
-
-                        var rangoAtencion = L.circle(ordenLatLong, dataSource.at(i).Radio, {
-                            color: 'LightGreen'
-                        }).addTo(map).on('click', update(dataSource.at(i).Descripcion, dataSource.at(i).Id, dataSource.at(i).Codigo));
+                for (var i = 0; i < 1; i++) {//cantidad de órdenes del cliente
+                    if (dataSource.at(i).Localizacion && dataSource.at(i).Users.toString() == "56dccaa0-fd8b-11e5-a92e-af87711392e8") {
+                        var pedido = [];
+                        for (var j = 0; j < dataSource.at(i).Entrada.length; j++) {
+                            pedido.push("</br>" + dataSource.at(i).EntradaExpanded[j] + " + " + dataSource.at(i).PlatoExpanded[j]);
+                        }
+                        ubicSeguimientos = dataSource.at(i).Localizacion.replace(/Latitude:|Longitude:|&nbsp/gi, ""); //[43.465187, -80.52237200000002];
+                        var seguimientoLatLong = [parseFloat(ubicSeguimientos.substring(0, ubicSeguimientos.indexOf(","))), parseFloat(ubicSeguimientos.substring(ubicSeguimientos.indexOf(",") + 1, ubicSeguimientos.length))];
+                        markerClientes.addLayer(new L.Marker(seguimientoLatLong, {
+                            icon: iconSeguimiento
+                        }).bindPopup("<big>Orden: " + dataSource.at(i).Orden + "</big></br><b><em>" + pedido + "</em></b></br></br>Total: S/. " + dataSource.at(i).Costo + "</br>" + dataSource.at(i).SedeExpanded + "</br>Dirección: " + dataSource.at(i).Direccion));
+                        muestraReloj(dataSource.at(0).ModifiedAt);
+                        map.panTo(new L.LatLng(parseFloat(ubicSeguimientos.substring(0, ubicSeguimientos.indexOf(","))), parseFloat(ubicSeguimientos.substring(ubicSeguimientos.indexOf(",") + 1, ubicSeguimientos.length))));
+                        // map.setView(new L.LatLng(40.737, -73.923), 8);
                     }
                 }
-            });
-            var ubicEntregados = "";
-            for (var i = 0; i < ordenes.length; i++) {
-                // ubicEntregados = ordenes[i].Localizacion.latitude + "," + ordenes[i].Localizacion.longitude; //[43.465187, -80.52237200000002];
-                var ordenLatLong = [parseFloat(ordenes[i].Localizacion.latitude), parseFloat(ordenes[i].Localizacion.longitude)];
-                // console.log(ordenLatLong);
-                markerEntregados.addLayer(new L.Marker(ordenLatLong, {
-                    icon: iconEntregados
-                }).bindPopup("Costo: S/ " + ordenes[i].Costo));
-            }
 
-            if ($("#buscarOrden").val() !== "") {
-                map.removeLayer(markerEntregados);
-            }
+            });
         },
         fetchFilteredData = function (paramFilter, searchFilter) {
-            var model = parent.get('ordenModel'),
+            var model = parent.get('seguimientoModel'),
                 dataSource = model.get('dataSource');
 
             if (paramFilter) {
@@ -157,6 +143,7 @@ app.orden = kendo.observable({
             }
             var miLatLong = [];
             var miArgument = [];
+            //Cambiear esto por el GPS del despachador
             navigator.geolocation.getCurrentPosition(function (position) {
                     miLatLong = [parseFloat(position.coords.latitude), parseFloat(position.coords.longitude)];
                     miArgument = 'Latitude: ' + position.coords.latitude + '<br />' +
@@ -167,17 +154,12 @@ app.orden = kendo.observable({
                         'Heading: ' + position.coords.heading + '<br />' +
                         'Speed: ' + position.coords.speed + '<br />' +
                         'Timestamp: ' + position.timestamp + '<br />';
-                    console.log(miLatLong);
-                    console.log(miArgument);
                     cargaPosAlmacenesDespachador(dataSource, miLatLong, miArgument);
-                    console.log("miLatLong: " + miLatLong);
                 },
                 function (error) {
                     alert('code: ' + error.code + '\n' +
                         'message: ' + error.message + '\n');
                 });
-
-
         },
         processImage = function (img) {
             if (!img) {
@@ -212,15 +194,36 @@ app.orden = kendo.observable({
         dataSourceOptions = {
             type: 'everlive',
             transport: {
-                typeName: 'Sucursales',
-                dataProvider: dataProvider
+                typeName: 'Ordenes',
+                dataProvider: dataProvider,
+                read: {
+                    headers: {
+                        "X-Everlive-Expand": JSON.stringify({
+                            "Entrada": {
+                                "TargetTypeName": "Entrada",
+                                "ReturnAs": "EntradaExpanded",
+                                "SingleField": "Entrada"
+                            },
+                            "Plato": {
+                                "TargetTypeName": "Plato",
+                                "ReturnAs": "PlatoExpanded",
+                                "SingleField": "Plato"
+                            },
+                            "Sede": {
+                                "TargetTypeName": "Sucursales",
+                                "ReturnAs": "SedeExpanded",
+                                "SingleField": "Descripcion"
+                            },
+                        })
+                    }
+                }
             },
             change: function (e) {
                 var data = this.data();
                 for (var i = 0; i < data.length; i++) {
                     var dataItem = data[i];
                     dataItem['PictureUrl'] =
-                        processImage(dataItem['Imagen']);
+                        processImage(dataItem['Picture']);
                     flattenLocationProperties(dataItem);
                 }
             },
@@ -236,16 +239,12 @@ app.orden = kendo.observable({
                             field: 'Id',
                             defaultValue: ''
                         },
-                        'Descripcion': {
-                            field: 'Descripcion',
+                        'Costo': {
+                            field: 'Costo',
                             defaultValue: ''
                         },
-                        'Detalle': {
-                            field: 'Detalle',
-                            defaultValue: ''
-                        },
-                        'Imagen': {
-                            field: 'Imagen',
+                        'Picture': {
+                            field: 'Picture',
                             defaultValue: ''
                         },
                     },
@@ -259,81 +258,25 @@ app.orden = kendo.observable({
             serverSorting: true,
             serverPaging: true,
             sort: {
-                field: "Orden",
+                field: "CreatedAt",
                 dir: "desc"
             },
-            pageSize: 50
+            pageSize: 1
         },
         dataSource = new kendo.data.DataSource(dataSourceOptions),
-        ordenModel = kendo.observable({
+        seguimientoModel = kendo.observable({
             dataSource: dataSource,
             searchChange: function (e) {
                 var searchVal = e.target.value,
                     searchFilter;
                 if (searchVal) {
                     searchFilter = {
-                        field: 'Id', // -> Id is ok , Orden dont work
+                        field: 'Id', // -> Id is ok , Seguimiento dont work
                         operator: 'contains',
                         value: searchVal,
                     };
                 }
-                fetchFilteredData(ordenModel.get('paramFilter'), searchFilter);
-            },
-            addNuevaOrden: function (e) {
-                var total = 0;
-                var dataSource = ordenModel.get('dataSource');
-                var dataSourceOrdenes = new kendo.data.DataSource({
-                    type: 'everlive',
-                    transport: {
-                        typeName: 'Ordenes',
-                        dataProvider: dataProvider
-                    }
-                });
-                dataSourceOrdenes.fetch(function () {
-
-                    var latitude = parseFloat($("#miLatLong").val().substring(0, $("#miLatLong").val().indexOf(",")));
-                    var longitude = parseFloat($("#miLatLong").val().substring($("#miLatLong").val().indexOf(",") + 1, $("#miLatLong").val().length));
-
-                    if ($("#miLatLong").val() == "") {
-                        alert("Marque un punto dentro del radio de cobertura");
-                        return;
-                    }
-
-                    if ($("#miDireccion").val() == "") {
-                        alert("Ingrese su dirección");
-                        $("#miDireccion").focus();
-                        return;
-                    }
-                    app.mobileApp.navigate('#components/georeferencia/carrito.html?');
-                    $("#btnGenerarOrden").data("kendoMobileButton").enable("true");
-
-                    if (localStorage.getItem("misDatosCliente") != undefined) {
-                        var misDatosGuardados = JSON.parse(localStorage.getItem('misDatosCliente'));
-                        misDatosGuardados.push({
-                            "latitude": latitude,
-                            "longitude": longitude,
-                            "direccion": $("#miDireccion").val(),
-                            "idsucursal": $("#tagIdSucursal").text(),
-                            "codsucursal": $("#tagCodSucursal").text()
-                        });
-                        localStorage.setItem("misDatosCliente", JSON.stringify(misDatosGuardados));
-                        var misDatosCliente = localStorage.getItem('misDatosCliente');
-                        console.log('IF misDatosCliente: ', JSON.parse(misDatosCliente));
-                    } else {
-                        var misDatosCliente = [{
-                            "latitude": latitude,
-                            "longitude": longitude,
-                            "direccion": $("#miDireccion").val(),
-                            "idsucursal": $("#tagIdSucursal").text(),
-                            "codsucursal": $("#tagCodSucursal").text()
-                        }];
-                        localStorage.setItem("misDatosCliente", JSON.stringify(misDatosCliente));
-                        var misDatosCliente = localStorage.getItem('misDatosCliente');
-                        console.log('ELSE misDatosCliente: ', JSON.parse(misDatosCliente));
-                    }
-
-                });
-
+                fetchFilteredData(seguimientoModel.get('paramFilter'), searchFilter);
             },
             currentItem: null,
         });
@@ -341,15 +284,14 @@ app.orden = kendo.observable({
 
     if (typeof dataProvider.sbProviderReady === 'function') {
         dataProvider.sbProviderReady(function dl_sbProviderReady() {
-            parent.set('ordenModel', ordenModel);
+            parent.set('seguimientoModel', seguimientoModel);
         });
     } else {
-        parent.set('ordenModel', ordenModel);
+        parent.set('seguimientoModel', seguimientoModel);
     }
 
     parent.set('onShow', function (e) {
         var param = e.view.params.filter ? JSON.parse(e.view.params.filter) : null;
         fetchFilteredData(param);
-        $("#modalInfoOrden").kendoMobileModalView("open");
     });
-})(app.orden);
+})(app.seguimiento);

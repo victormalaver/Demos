@@ -1,22 +1,13 @@
-<style>
-    .km-nova h1,
-    .km-nova h2,
-    .km-nova h3,
-    .km-nova h4,
-    .km-nova h5,
-    .km-nova h6,
-    .km-nova p {
-        color: white;
-    }
-</style>
-<div id="Entrega" data-role="view" data-title="" data-layout="main" data-model="app.entrega.entregaModel" data-show="app.entrega.onShow" data-after-show="app.entrega.afterShow">
+<div id="Entrega" data-role="view" data-title="Mapa de Ordenes" data-layout="main" data-model="app.entrega.entregaModel" data-show="app.entrega.onShow" data-after-show="app.entrega.afterShow">
+    <header data-role="header">
+        <div data-role="navbar" class="header-text">
+            <span style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis; text-align: center; display: block; margin-left: 70px; margin-right: 70px;" data-role="view-title"></span>
+            <a data-role="backbutton" data-align="left">Cancel</a>
+        </div>
+    </header>
     <div id="divMapEntrega" align="center">
     </div>
     <div id="mapEntrega" style="width:100%;"></div>
-    <div class="button-group">
-        <a data-role="button" href="index.html">Regresar</a>
-        <a data-role="button">Confirmar</a>
-    </div>
     <!--  Certain features like grouping and inset styling are not supported when endless scroll is enabled. -->
     <form class="km-filter-form custom-filter">
         <div class="km-filter-wrap">

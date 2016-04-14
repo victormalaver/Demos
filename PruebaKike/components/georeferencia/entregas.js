@@ -3,9 +3,24 @@
 app.entrega = kendo.observable({
     onShow: function () {},
     afterShow: function () {},
+
 });
 
+function onChange(e) {
+    var Id = e.sender.options.name;
+    var Orden = e.sender.options.prefix;
+    app.mobileApp.navigate('#components/georeferencia/listado.html?Id=' + Id + "&Estado=" + e.checked);
 
+    if (e.checked) { //si entregar
+        $("#titleEstadoOrden").html("¿Entregar la orden " + Orden + " ?");
+    } else {
+        $("#titleEstadoOrden").html("¿Cambiar a pendiente la orden " + Orden + " ?");
+    }
+
+    $("#actionsheetEstado").data("kendoMobileActionSheet").open();
+
+
+}
 (function (parent) {
     var dataProvider = app.data.pruebaKike,
         cargaPosAlmacenesDespachador = function (dataSource, dataSourceSedes) {
@@ -16,6 +31,18 @@ app.entrega = kendo.observable({
 
             //<![CDATA[
             var restLatLong = [-12.105753065958925, -77.03500092029572];
+            var iconMiUbicacion = L.icon({
+                iconUrl: 'Mapa/images/mapPinOver2.gif', //iconUrl: 'Mapa/images/markerEntregados.png',
+                // iconRetinaUrl: 'my-icon@2x.png',
+                // iconSize: [38, 95], 
+                iconAnchor: [15, 38], //X,Y
+                popupAnchor: [0, -35],
+                // // shadowUrl: 'my-icon-shadow.png',
+                // shadowRetinaUrl: 'my-icon-shadow@2x.png',
+                // shadowSize: [68, 95],
+                // shadowAnchor: [22, 94]
+            });
+
             var iconEntregados = L.icon({
                 iconUrl: 'Mapa/images/markerEntregados3.png', //iconUrl: 'Mapa/images/markerEntregados.png',
                 // iconRetinaUrl: 'my-icon@2x.png',
@@ -28,7 +55,7 @@ app.entrega = kendo.observable({
                 // shadowAnchor: [22, 94]
             });
 
-            var iconCliente = L.icon({
+            var iconPendientes = L.icon({
                 iconUrl: 'Mapa/images/markerEspera3.png',
                 // iconRetinaUrl: 'my-icon@2x.png',
                 // iconSize: [38, 95],
@@ -40,8 +67,8 @@ app.entrega = kendo.observable({
                 // shadowAnchor: [22, 94]
             });
 
-            var iconMiUbicacion = L.icon({
-                iconUrl: 'Mapa/images/mapPinOver2.gif',
+            var iconSucursal = L.icon({
+                iconUrl: 'Mapa/images/markerRestauranteO.png',
                 // iconRetinaUrl: 'my-icon@2x.png',
                 // iconSize: [38, 95],
                 iconAnchor: [15, 38], //X,Y
@@ -52,17 +79,6 @@ app.entrega = kendo.observable({
                 // shadowAnchor: [22, 94]
             });
 
-            var iconSucursal = L.icon({
-                iconUrl: 'Mapa/images/markerRestaurante5.png',
-                // iconRetinaUrl: 'my-icon@2x.png',
-                // iconSize: [38, 95],
-                iconAnchor: [15, 38], //X,Y
-                popupAnchor: [0, -35],
-                // // shadowUrl: 'my-icon-shadow.png',
-                // shadowRetinaUrl: 'my-icon-shadow@2x.png',
-                // shadowSize: [68, 95],
-                // shadowAnchor: [22, 94]
-            });
 
 
             var map = new L.map('mapEntrega', {
@@ -77,16 +93,16 @@ app.entrega = kendo.observable({
                 // minZoom: 2
             }).addTo(map);
 
+            var miUbicacion = new L.MarkerClusterGroup();
             var markerSucursales = new L.MarkerClusterGroup();
-            var markerClientes = new L.MarkerClusterGroup();
+            var markerPendientes = new L.MarkerClusterGroup();
             var markerEntregados = new L.MarkerClusterGroup();
             //markers.addLayer(new L.Marker([1, 1]));
 
-            // Mi ubicacion
-            var miUbicacion = new L.MarkerClusterGroup();
+
 
             var options = {
-                frequency: 1000, //1000 = 1 s
+                frequency: 1000 * 60, //1000 = 1 s
                 enableHighAccuracy: true
             };
             var miLatLong = [];
@@ -103,16 +119,13 @@ app.entrega = kendo.observable({
                     console.log("Error");
                 }, options);
 
-            navigator.geolocation.clearWatch(watchID); //para detener
-            watchID = null; //para detener
+            // navigator.geolocation.clearWatch(watchID); //para detener
+            // watchID = null; //para detener
 
             //end mi ubicacion 
 
-            // console.log(miUbicacion);
-
-
             markerSucursales.addTo(map);
-            markerClientes.addTo(map);
+            markerPendientes.addTo(map);
             markerEntregados.addTo(map);
 
 
@@ -122,11 +135,10 @@ app.entrega = kendo.observable({
             dataSourceSedes.fetch(function () {
                 for (var i = 0; i < dataSourceSedes.total(); i++) {
                     if (dataSourceSedes.at(i).Localizacion) {
-                        console.log(dataSourceSedes);
                         var sucursalLatLong = [parseFloat(dataSourceSedes.at(i).Localizacion.latitude), parseFloat(dataSourceSedes.at(i).Localizacion.longitude)];
                         markerSucursales.addLayer(new L.Marker(sucursalLatLong, {
                             icon: iconSucursal
-                        }).bindPopup("<b>" + dataSourceSedes.at(i).Descripcion + "</b></br>" + dataSourceSedes.at(i).Estado + "</br>" + dataSourceSedes.at(i).Detalle + "</br>" + "<img src='" + dataSourceSedes.at(i).PictureUrl + "'" + "width='100%'" + "height='100%'>"));
+                        }).bindPopup("<b>" + dataSourceSedes.at(i).Descripcion + "</b></br>" + dataSourceSedes.at(i).Estado + "</br>" + dataSourceSedes.at(i).Detalle + "</br>"));
                         var rangoAtencion = L.circle(sucursalLatLong, dataSourceSedes.at(i).Radio, {
                             color: 'LightGreen'
                         }).addTo(map);
@@ -136,73 +148,43 @@ app.entrega = kendo.observable({
             //End Sedes
 
             var ubicOrdenes = "";
+            var ubicSeguimientos = "";
             dataSource.fetch(function () {
-                for (var i = 0; i < dataSource.total(); i++) {
-                    console.log(dataSource.at(i));
-                    if (dataSource.at(i).Localizacion) {
-                        console.log(dataSource.at(i).Localizacion);
-                        ubicOrdenes = dataSource.at(i).Localizacion.replace(/Latitude:|Longitude:|&nbsp/gi, ""); //[43.465187, -80.52237200000002];
-                        var ordenLatLong = [parseFloat(ubicOrdenes.substring(0, ubicOrdenes.indexOf(","))), parseFloat(ubicOrdenes.substring(ubicOrdenes.indexOf(",") + 1, ubicOrdenes.length))];
-                        console.log(ordenLatLong);
-                        markerClientes.addLayer(new L.Marker(ordenLatLong, {
-                            icon: iconCliente
-                        }).bindPopup("Costo: S/ " + dataSource.at(i).Costo));
+                if (dataSource.total() > 0) {
+                    for (var i = 0; i < 50; i++) { //total de ordenes
+                        if (dataSource.at(i).Localizacion && dataSource.at(i).Estado == "Entregado") {
+                            var pedido = [];
+                            for (var j = 0; j < dataSource.at(i).Entrada.length; j++) {
+                                pedido.push("</br>" + dataSource.at(i).EntradaExpanded[j] + " + " + dataSource.at(i).PlatoExpanded[j]);
+                            }
+
+                            ubicOrdenes = dataSource.at(i).Localizacion.replace(/Latitude:|Longitude:|&nbsp/gi, ""); //[43.465187, -80.52237200000002];
+                            var ordenLatLong = [parseFloat(ubicOrdenes.substring(0, ubicOrdenes.indexOf(","))), parseFloat(ubicOrdenes.substring(ubicOrdenes.indexOf(",") + 1, ubicOrdenes.length))];
+                            markerEntregados.addLayer(new L.Marker(ordenLatLong, {
+                                icon: iconEntregados
+                            }).bindPopup("<big>Orden: " + dataSource.at(i).Orden + "</big></br><b><em>" + pedido + "</em></b></br></br>Total: S/. " + dataSource.at(i).Costo + "</br>" + dataSource.at(i).SedeExpanded + "</br>Dirección: " + dataSource.at(i).Direccion));
+
+                            ubicSeguimientos = dataSource.at(i).Localizacion.replace(/Latitude:|Longitude:|&nbsp/gi, ""); //[43.465187, -80.52237200000002];
+                            map.panTo(new L.LatLng(parseFloat(ubicSeguimientos.substring(0, ubicSeguimientos.indexOf(","))), parseFloat(ubicSeguimientos.substring(ubicSeguimientos.indexOf(",") + 1, ubicSeguimientos.length))));
+
+                        } else {
+                            var pedido = [];
+                            for (var j = 0; j < dataSource.at(i).Entrada.length; j++) {
+                                pedido.push("</br>" + dataSource.at(i).EntradaExpanded[j] + " + " + dataSource.at(i).PlatoExpanded[j]);
+                            }
+                            ubicOrdenes = dataSource.at(i).Localizacion.replace(/Latitude:|Longitude:|&nbsp/gi, ""); //[43.465187, -80.52237200000002];
+                            var ordenLatLong = [parseFloat(ubicOrdenes.substring(0, ubicOrdenes.indexOf(","))), parseFloat(ubicOrdenes.substring(ubicOrdenes.indexOf(",") + 1, ubicOrdenes.length))];
+                            markerPendientes.addLayer(new L.Marker(ordenLatLong, {
+                                icon: iconPendientes
+                            }).bindPopup("<big>Orden: " + dataSource.at(i).Orden + "</big></br><b><em>" + pedido + "</em></b></br></br>Total: S/. " + dataSource.at(i).Costo + "</br>" + dataSource.at(i).SedeExpanded + "</br>Dirección: " + dataSource.at(i).Direccion));
+
+                            ubicSeguimientos = dataSource.at(i).Localizacion.replace(/Latitude:|Longitude:|&nbsp/gi, ""); //[43.465187, -80.52237200000002];
+                            map.panTo(new L.LatLng(parseFloat(ubicSeguimientos.substring(0, ubicSeguimientos.indexOf(","))), parseFloat(ubicSeguimientos.substring(ubicSeguimientos.indexOf(",") + 1, ubicSeguimientos.length))));
+                        }
                     }
                 }
             });
 
-
-            var ubicEntregados = "";
-            for (var i = 0; i < ordenes.length; i++) {
-                // ubicEntregados = ordenes[i].Localizacion.latitude + "," + ordenes[i].Localizacion.longitude; //[43.465187, -80.52237200000002];
-                var ordenLatLong = [parseFloat(ordenes[i].Localizacion.latitude), parseFloat(ordenes[i].Localizacion.longitude)];
-                // console.log(ordenLatLong);
-                markerEntregados.addLayer(new L.Marker(ordenLatLong, {
-                    icon: iconEntregados
-                }).bindPopup("Costo: S/ " + ordenes[i].Costo));
-            }
-
-
-            // if (ubicDespachador.length > 0) {
-            //     for (var i = 0; i < ubicDespachador.length; i++) {
-            //         // console.log(ubicDespachador[i].Info);
-            //         // console.log(ubicDespachador[i].Fecha);
-            //         // console.log(ubicDespachador[i].LatLong);
-            //         // console.log(ubicDespachador[i].Operacion);
-            //         markerDespachadores.addLayer(new L.Marker(ubicDespachador[i].LatLong, {
-            //             icon: iconDespachador
-            //         }).bindPopup(ubicDespachador[i].Info));
-            //     }
-            // } else {
-
-            // }
-
-
-
-            //control
-            //control
-            // var osmUrl = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-            //     osmAttrib = '&copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-            //     osm = L.tileLayer(osmUrl, {
-            //         maxZoom: 18,
-            //         // attribution: osmAttrib
-
-            //         icon: iconAlmacen
-
-            //     }),
-            //     osm2 = new L.TileLayer(osmUrl, {
-            //         attribution: 'Hello world',
-            //         icon: iconAlmacen 
-            //     });
-
-            // var marker = new L.Marker(new L.LatLng(43.465187,-80.52237200000002), {
-            //     color: 'red'
-            // });
-            // map.addLayer(marker);
-            // marker.bindPopup("Aquí estoy").openPopup();
-
-            // var marker2 = new L.Marker(new L.LatLng(43.465187,-80.52237200000002));
-            // map.addLayer(marker2);
 
             var layersControl = new L.Control.Layers(
                 // {
@@ -211,24 +193,16 @@ app.entrega = kendo.observable({
                 // }, 
                 {}, //dejar esto así
                 {
-                    'Pendientes': markerSucursales,
-                    'Pendientes': markerClientes,
+                    'Sucursales': markerSucursales,
+                    'Pendientes': markerPendientes,
                     'Entregados': markerEntregados,
                     'Mi Ubicación': miUbicacion,
                 });
 
             map.addControl(layersControl);
-            // map.addControl(new L.Control.Scale());
-            //control
-            //control
-            // L.DomEvent.on(L.DomUtil.get('verMarcadores'), 'click', function () {
-            //     map.addLayer(markers);
-            // });
-
             if ($("#buscarOrden").val() !== "") {
-                map.removeLayer(markerEntregados);
+                // map.removeLayer(markerEntregados);
             }
-
         },
         fetchFilteredData = function (paramFilter, searchFilter) {
             // searchFilter = parseInt(searchFilter);
@@ -260,7 +234,9 @@ app.entrega = kendo.observable({
                     dataProvider: dataProvider
                 }
             });
-            cargaPosAlmacenesDespachador(dataSource, dataSourceSedes);
+            if ($("#mapEntrega").length) {
+                cargaPosAlmacenesDespachador(dataSource, dataSourceSedes);
+            }
         },
         processImage = function (img) {
             if (!img) {
@@ -295,8 +271,34 @@ app.entrega = kendo.observable({
         dataSourceOptionsOrden = {
             type: 'everlive',
             transport: {
-                typeName: 'Ordenenes',
-                dataProvider: dataProvider
+                typeName: 'Ordenes',
+                dataProvider: dataProvider,
+                read: {
+                    headers: {
+                        "X-Everlive-Expand": JSON.stringify({
+                            "Entrada": {
+                                "TargetTypeName": "Entrada",
+                                "ReturnAs": "EntradaExpanded",
+                                "SingleField": "Entrada"
+                            },
+                            "Plato": {
+                                "TargetTypeName": "Plato",
+                                "ReturnAs": "PlatoExpanded",
+                                "SingleField": "Plato"
+                            },
+                            "Sede": {
+                                "TargetTypeName": "Sucursales",
+                                "ReturnAs": "SedeExpanded",
+                                "SingleField": "Descripcion"
+                            },
+                            "Users": {
+                                "TargetTypeName": "Users",
+                                "ReturnAs": "UsersExpanded",
+                                "SingleField": "Username"
+                            },
+                        })
+                    }
+                }
             },
             change: function (e) {
                 var data = this.data();
@@ -309,7 +311,8 @@ app.entrega = kendo.observable({
             },
             error: function (e) {
                 if (e.xhr) {
-                    alert(JSON.stringify(e.xhr));
+                    // alert(JSON.stringify(e.xhr)); //error anonimus consult
+                    console.log(JSON.stringify(e.xhr));
                 }
             },
             schema: {
@@ -342,7 +345,7 @@ app.entrega = kendo.observable({
             serverSorting: true,
             serverPaging: true,
             sort: {
-                field: "Orden",
+                field: "CreatedAt",
                 dir: "desc"
             },
             pageSize: 50
@@ -351,6 +354,12 @@ app.entrega = kendo.observable({
         entregaModel = kendo.observable({
             dataSource: dataSourceOrden,
             searchChange: function (e) {
+                if ($("#buscarOrdenListado").length) {
+                    var buttongroup = $("#buttonGroupHeader").data("kendoMobileButtonGroup");
+                    // buttongroup.select(buttongroup.element.children().eq(0));
+                    buttongroup.select(0);
+                }
+
                 var searchVal = e.target.value,
                     searchFilter;
                 if (searchVal) {
@@ -361,6 +370,65 @@ app.entrega = kendo.observable({
                     };
                 }
                 fetchFilteredData(entregaModel.get('paramFilter'), searchFilter);
+            },
+            verOrdenesPendientes: function () {
+                var searchVal = "Entregado",
+                    searchFilter;
+                if (searchVal) {
+                    searchFilter = {
+                        field: 'Estado', // -> Id is ok , Orden dont work
+                        operator: 'neq',
+                        value: searchVal,
+                    };
+                }
+                fetchFilteredData(entregaModel.get('paramFilter'), searchFilter);
+            },
+            verOrdenesEntregadas: function () {
+                var searchVal = "Entregado",
+                    searchFilter;
+                if (searchVal) {
+                    searchFilter = {
+                        field: 'Estado', // -> Id is ok , Orden dont work
+                        operator: 'eq',
+                        value: searchVal,
+                    };
+                }
+                fetchFilteredData(entregaModel.get('paramFilter'), searchFilter);
+            },
+            cambiarEstadoOrden: function (e) {
+                $.urlParam = function (name) {
+                    var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
+                    if (results == null) {
+                        return null;
+                    } else {
+                        return results[1] || 0;
+                    }
+                }
+                var item = $.urlParam('Id');
+                var Estado = $.urlParam('Estado');
+
+                var dataSource = entregaModel.get('dataSource');
+                var itemData = dataSource.get(item);
+
+
+                // prepare edit
+                if (Estado == "true") {
+                    itemData.set('Estado', 'Entregado');
+                } else {
+                    itemData.set('Estado', 'Pendiente');
+                }
+
+
+                dataSource.one('sync', function (e) {
+                    app.mobileApp.navigate('#:back');
+					 $("#actionsheetEstado").data("kendoMobileActionSheet").close();
+                });
+
+                dataSource.one('error', function () {
+                    dataSource.cancelChanges(itemData);
+                });
+
+                dataSource.sync();
             },
             currentItem: null,
         });

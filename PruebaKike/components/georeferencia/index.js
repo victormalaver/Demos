@@ -130,14 +130,14 @@ app.entradas = kendo.observable({
             openModalInfoGeoref: function (e) {
                 $("#modalInfoGeoref").kendoMobileModalView("open");
                 // $("#modalInfoGeoref").parent().parent().parent().css("background", "rgba(0, 0, 0, 0.8)");
-                $("#modalInfoGeoref").parent().parent().css({
-                    "text-align": "center",
-                    "position": "relative!important",
-                    "top": "auto!important",
-                    "left": "auto!important",
-                    "display": "inline-block!important",
-                    "vertical-align": "middle"
-                });
+                // $("#modalInfoGeoref").parent().parent().css({
+                //     "text-align": "center",
+                //     "position": "relative!important",
+                //     "top": "auto!important",
+                //     "left": "auto!important",
+                //     "display": "inline-block!important",
+                //     "vertical-align": "middle"
+                // });
             },
             currentItem: null
         });

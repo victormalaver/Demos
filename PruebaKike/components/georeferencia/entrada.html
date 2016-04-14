@@ -86,7 +86,7 @@
         });
         setTimeout(function () {
             closeModalViewEntradas();
-        }, 500);
+        }, 0000);
         countCarrito();
     }
 
@@ -97,11 +97,14 @@
             $(".countCarrito").css("background-color", "white");
             var ordenesGuardas = JSON.parse(localStorage.getItem('ordenesCarrito'));
             $(".countCarrito").text(ordenesGuardas.length < 10 ? "0" + ordenesGuardas.length : ordenesGuardas.length);
+
+            $(".carritoImagen").attr("href", "#components/georeferencia/carrito.html");
         } else {
             $(".countCarrito").css("color", "transparent");
             $(".countCarrito").css("background-color", "transparent");
             $(".countCarrito").text("00");
             $(".carritoImagen").css("opacity", "0.3");
+            $(".carritoImagen").removeAttr("href");
         }
     }
 </script>
@@ -122,8 +125,6 @@
         background-color: #c95820;
     }
     #listviewEntradas>li {
-        /*         padding-left: 0; */
-        
         padding: 0;
     }
     .km-list>li>* {
@@ -161,6 +162,7 @@
         color: rgba(0, 0, 0, 0.5);
         position: inherit;
         margin: 6%;
+        background-color: #c95820 !important;
     }
     .thumb div div i {
         color: rgba(0, 0, 0, 0.5);

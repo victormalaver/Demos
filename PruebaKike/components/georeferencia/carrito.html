@@ -1,4 +1,4 @@
-<div id="carritoCompras" data-role="view" data-title="Carrito de Compras" data-layout="main" data-model="app.carrito.carritoModel" data-show="app.carrito.onShow">
+<div id="carritoCompras" data-role="view" data-title="Carrito de Compras" data-transition="overlay:down" data-layout="main" data-model="app.carrito.carritoModel" data-show="app.carrito.onShow">
     <header data-role="header">
         <div id="headerCarrito" data-role="navbar" class="header-text">
             <span style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis; text-align: center; display: block; margin-left: 70px; margin-right: 70px;" data-role="view-title"></span>
@@ -16,12 +16,65 @@
         <div class="button-group button-group-vertical">
             </br>
             <a data-role="button" href="#components/georeferencia/orden.html" style="background-color:#c95820;">Mi Ubicacion</a>
-            <a id="btnGenerarOrden" data-role="button" style="background-color:#c95820;" data-bind="events: { click: addOrdenCarrito }">Generar Orden</a>
+            <a id="btnGenerarOrden" data-role="button" data-enable="false" style="background-color:#c95820;" data-bind="events: { click: openModalCarrito }">Generar Orden</a>
+        </div>
+    </div>
+    <ul id="actionsheetDelete" data-role="actionsheet">
+        <p id="titleBorrarOrden">
+            ¿Desea eliminar el pedido?
+        </p>
+        <div data-role="footer">
+            <div id="footerEliminarPedido" data-role="tabstrip">
+                <a onclick="closeActionSheet('actionsheetDelete')"><h1 style="margin: -19px 0 0 0;font-size: xx-large;color: white;">No</h1></br>Eliminar Pedido</a>
+                <a id="btnBorrarOrden" onclick=""><h1 style="margin: -19px 0 0 0;font-size: xx-large;color: white;">Si</h1></br>Eliminar Pedido</a>
+            </div>
+        </div>
+    </ul>
+</div>
+<div data-role="modalview" id="modalConfirmarPerdido" data-model="app.carrito.carritoModel" style="width: 80%;border-radius: 20px;z-index: -1;" data-modal="false">
+    <div data-role="header">
+        <div data-role="navbar">
+            <span>Confirmar pedido</span>
+            <!--<a data-click="closeModalViewLogin" data-role="button" data-align="right">Cancel</a> -->
+        </div>
+    </div>
+    <div align="center" style="padding: 1em 2em 2em 2em;">
+        <div align="center">
+            <div>
+                <b id="numPedidosModal" style="float: left;">Pedidos: </b>
+                <label style="float: right;">S/
+                    <tag id="precioTotalOrdenModal"></tag>
+                </label>
+            </div>
+        </div>
+    </div>
+    <div data-role="footer">
+        <div data-role="navbar">
+            <a onclick="closeModal('modalConfirmarPerdido')" id="modalview-login-button" type="button" data-role="button" data-align="right" style="color: black">Cancelar</a>
+            <a data-bind="events: { click: addOrdenCarrito }" id="modalview-reg-button" type="button" data-role="button" data-align="right" style="color: #c95820">Confirmar</a>
         </div>
     </div>
 </div>
-
 <style>
+    .km-nova .km-tabstrip .km-button.km-state-active {
+        background-image: none;
+    }
+    #footerEliminarPedido {
+        font: normal 1em "Helvetica Neue", "Helvetica", "Roboto Light", "Arial", "Verdana", "sans-serif";
+        background-image: none;
+        background-color: #ffcd86;
+    }
+    #actionsheetDelete {
+        text-align: center;
+        background: #ffcd86;
+        border-color: #ffcd86;
+    }
+    #titleBorrarOrden {
+        margin: 0;
+    }
+    #modalConfirmarPerdido .km-view-title {
+        background-color: #c95820;
+    }
     .km-view,
     #carritoCompras {
         background-image: none;
@@ -86,6 +139,7 @@
     }
     #btn-delete a {
         margin: 5px 3px 0 0;
+        text-decoration: none;
     }
     .divContentCarrito {
         background-color: #f8f8f8;

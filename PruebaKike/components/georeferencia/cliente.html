@@ -1,0 +1,36 @@
+<div id="Georeferencia" data-role="view" data-title="&nbsp" data-layout="main" data-model="app.entradas">
+    <header data-role="header">
+        <div id="headerCliente" data-role="navbar" class="header-text">
+            <span style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis; text-align: center; display: block; margin-left: 70px; margin-right: 70px;" data-role="view-title"></span>
+            <a data-role="backbutton" data-align="left">Cancel</a>
+            <a data-role="button" data-align="right">
+<!--                 <a data-role="detailbutton" data-icon="info" class="iconInfo" data-bind="{events: {click: entradasModel.openModalInfoGeoref} }"></a> -->
+            </a>
+        </div>
+    </header>
+    </br>
+    </br>
+    </br>
+    </br>
+    </br>
+    </br>
+    </br>
+    </br>
+    <div align="center">
+        <img src="components/georeferencia/images/fondoRestaurant.png" style="width:40%;" />
+        <div class="button-group button-group-vertical">
+            <a data-role="button" data-bind="{events: {click: entradasModel.entradasTipo} }">Hacer Pedidos</a>
+            <a data-role="button" href="#components/georeferencia/seguimiento.html">Seguimiento de orden</a>
+        </div>
+    </div>
+</div>
+<div data-role="modalview" id="modalSuccesOrden" style="width: 80%;border-radius: 20px;" data-modal="false">
+    <h2 style=" color: #c95820;padding: 3em 0 3em 0;text-align: center; ">Se ha realizado su pedido satisfactoriamente.</h2>
+</div>
+<script src="components/georeferencia/database/ordenes.js"></script>
+<style>
+    #headerCliente {
+        background-image: none;
+        background-color: transparent;
+    }
+</style>

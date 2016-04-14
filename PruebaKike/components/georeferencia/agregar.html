@@ -19,11 +19,11 @@
     <div align="center">
         <img src="components/georeferencia/images/fondoRestaurant.png" style="width:40%;" />
         <div class="button-group button-group-vertical">
-            <a data-role="button" data-rel="actionsheet" href="#actionsheet">Agregar al carrito</a>
+            <a data-role="button" data-rel="actionsheet" href="#actionsheetAgregar">Agregar al carrito</a>
             <a data-role="button" onclick="readyAgregar('carrito');">Ver el Carrito</a>
         </div>
     </div>
-    <ul id="actionsheet" data-role="actionsheet" data-open="readyAgregar" data-close="goToEntradas">
+    <ul id="actionsheetAgregar" data-role="actionsheet" data-open="readyAgregar" data-close="goToEntradas">
         <li>
             <a>
                 <div style="padding: 0em 0em 1em 1em">
@@ -103,8 +103,7 @@
                     "PrecioPlato": PrecioPlato,
                     "IdEntrada": IdEntrada,
                     "Entrada": Entrada,
-                    "PrecioEntrada": PrecioEntrada
-            }];
+                    "PrecioEntrada": PrecioEntrada}];
                 localStorage.setItem("ordenesCarrito", JSON.stringify(nuevaOrden));
                 var ordenesCarrito = localStorage.getItem('ordenesCarrito');
                 console.log('ELSE ordenesCarrito: ', JSON.parse(ordenesCarrito));
