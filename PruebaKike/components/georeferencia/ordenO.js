@@ -9,6 +9,7 @@ app.orden = kendo.observable({
 (function (parent) {
     var dataProvider = app.data.pruebaKike,
         cargaPosAlmacenesDespachador = function (dataSource, miLatLong, miArgument) {
+            $("#miLatLong").val(miLatLong);
             $("#mapOrden").remove();
             var alto = $(window).height() - $("#headerOrden").height();
             var div = $("<div id='mapOrden' style='width:100%;height:" + alto + "px;' ></div>").text("");
@@ -67,103 +68,6 @@ app.orden = kendo.observable({
                 // maxZoom: 12,
                 // minZoom: 2
             }).addTo(map);
-
-
-            var marker = new L.Marker(miLatLong, {
-                draggable: false,
-                icon: iconMiUbicacion,
-            });
-
-            map.addLayer(marker);
-            marker.bindPopup("Mi Ubicación").openPopup();
-
-
-            var markerClientes = new L.MarkerClusterGroup();
-            var markerSucursales = new L.MarkerClusterGroup();
-            var markerEntregados = new L.MarkerClusterGroup();
-            markerClientes.addTo(map);
-            markerSucursales.addTo(map);
-            markerEntregados.addTo(map);
-            var ubicOrdenes = "";
-            dataSource.fetch(function () {
-                for (var i = 0; i < dataSource.total(); i++) {
-                    if (dataSource.at(i).Localizacion) {
-                        ubicOrdenes = dataSource.at(i).Localizacion.replace(/Latitude:|Longitude:|&nbsp/gi, ""); //[43.465187, -80.52237200000002];
-                        var ordenLatLong = [parseFloat(ubicOrdenes.substring(0, ubicOrdenes.indexOf(","))), parseFloat(ubicOrdenes.substring(ubicOrdenes.indexOf(",") + 1, ubicOrdenes.length))];
-                        markerClientes.addLayer(new L.Marker(ordenLatLong, {
-                            icon: iconSucursal
-                        }).bindPopup("<b>" + dataSource.at(i).Descripcion + "</b></br>" + dataSource.at(i).Estado + "</br>" + dataSource.at(i).Detalle + "</br>" + "<img src='" + dataSource.at(i).PictureUrl + "'" + "width='100%'" + "height='100%'>"));
-
-                        markerSucursales.addLayer(new L.circle(ordenLatLong, dataSource.at(i).Radio, {
-                            color: 'LightGreen',
-                            sucursal: dataSource.at(i).Descripcion,
-                            idSucursal: dataSource.at(i).Id,
-                            codSucursal: dataSource.at(i).Codigo
-                        }));
-                    }
-                }
-            });
-
-
-            map.on('move', function () {
-                marker.setLatLng(map.getCenter());
-                // console.log(map.getCenter());
-                miLatLong = marker.getLatLng();
-                miLatLong = [parseFloat(miLatLong.lat), parseFloat(miLatLong.lng)]; //[43.465187, -80.52237200000002]; 
-                $("#miLatLong").val(miLatLong);
-                // console.log($("#miLatLong").val());
-                // console.log(markerSucursales.getLayers());
-
-                var distanciaMinima = 0;
-                var sucursal;
-                markerSucursales.eachLayer(function (i) {
-                    // console.log(i);
-                    // console.log(i.getLatLng());
-                    miLatLong = miLatLong.toString();
-                    var a = i.getLatLng();
-                    var b = marker.getLatLng();
-                    if (distanciaMinima == 0) {
-                        distanciaMinima = parseInt(a.distanceTo(b));
-                        sucursal = i;
-                    } else {
-                        if (distanciaMinima > parseInt(a.distanceTo(b))) {
-                            distanciaMinima = parseInt(a.distanceTo(b));
-                            sucursal = i;
-                        }
-                    }
-                });
-                if (sucursal) {
-                    if (parseInt(sucursal.getRadius()) > distanciaMinima) {
-                        $("#tagSucursal").text(sucursal.options.sucursal);
-                        $("#tagIdSucursal").text(sucursal.options.idSucursal);
-                        $("#tagCodSucursal").text(sucursal.options.codSucursal);
-                    } else {
-                        $("#tagSucursal").text("Está fuera de la cobertura");
-                        $("#tagIdSucursal").text("");
-                        $("#tagCodSucursal").text("");
-                        $("#miLatLong").val("");
-                    }
-                } else {
-                    $("#tagSucursal").text("Error");
-                    $("#tagIdSucursal").text("");
-                    $("#tagCodSucursal").text("");
-                    $("#miLatLong").val("");
-                }
-            });
-            //Dragend event of map for update marker position
-            // map.on('dragend', function (e) {
-            //     var cnt = map.getCenter();
-            //     var position = marker.getLatLng();
-            //     // lat = Number(position['lat']).toFixed(5);
-            //     // lng = Number(position['lng']).toFixed(5);
-            //     //console.log(position);
-            //     // setLeafLatLong(lat, lng);
-
-            // });
-
-
-
-            return;
 
             var miUbicacion = new L.MarkerClusterGroup();
             var markerClientes = new L.MarkerClusterGroup();
@@ -264,9 +168,9 @@ app.orden = kendo.observable({
                         'Heading: ' + position.coords.heading + '<br />' +
                         'Speed: ' + position.coords.speed + '<br />' +
                         'Timestamp: ' + position.timestamp + '<br />';
-
+                    
                     cargaPosAlmacenesDespachador(dataSource, miLatLong, miArgument);
-
+                    
                 },
                 function (error) {
                     alert('code: ' + error.code + '\n' +

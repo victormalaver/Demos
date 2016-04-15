@@ -30,8 +30,13 @@
     <!-- END_CUSTOM_CODE_storeModel -->
     <script type="text/x-kendo-template" id="listadoModelTemplate">
         <div data-role="collapsible">
-            <h3 class="naranja">Orden: #: data['Orden'] # <span class="km-badge km-listview-item-badge" style="font-size:inherit;margin-right:-3em;">S/. #: data['Costo'] #</span></h3>
-            <div align="right"><input type="checkbox" data-role="switch" data-prefix="#: data['Orden'] #" data-name="#: data['Id'] #" data-change="onChangeEstadoOrden" #if (data[ 'Estado']=='Entregado' ){#data-checked="true" #}#></div>
+            #if( data[ 'Estado']=='Entregado' ){#
+            <h3 class="naranja">Orden: #: data['Orden'] # <span class="km-badge km-listview-item-badge" style="font-size:inherit;margin-right:-3em;background-color:YellowGreen;">S/. #: data['Costo'] #</span></h3>
+            <div align="right"><input type="checkbox" data-role="switch" data-prefix="#: data['Orden'] #" data-name="#: data['Id'] #" data-change="onChangeEstadoOrden" data-checked="true"></div>
+            #}else{#
+            <h3 class="naranja">Orden: #: data['Orden'] # <span class="km-badge km-listview-item-badge" style="font-size:inherit;margin-right:-3em;background-color:LightSalmon;">S/. #: data['Costo'] #</span></h3>
+            <div align="right"><input type="checkbox" data-role="switch" data-prefix="#: data['Orden'] #" data-name="#: data['Id'] #" data-change="onChangeEstadoOrden"></div>
+            #}#
             <ol>
                 <em class="naranja" style="position:absolute;margin-top:-44px;"> #= UsersExpanded #</em> # for (var i=0 ; i
                 <data[ 'EntradaExpanded'].length; i++) { # <li class="naranja">
